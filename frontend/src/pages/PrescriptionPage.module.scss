@@ -25,6 +25,7 @@
 
   .viewBtn,
   .printBtn,
+  .downloadBtn,
   .backBtn {
     padding: 10px 20px;
     border: none;
@@ -54,6 +55,15 @@
 
     &:hover:not(:disabled) {
       background: #218838;
+    }
+  }
+
+  .downloadBtn {
+    background: #007bff;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #0069d9;
     }
   }
 
@@ -97,6 +107,11 @@
     margin: 0 auto;
     max-width: 900px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    // Ensure colors are visible in PDF
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
   }
 
   .clinicHeader {
@@ -109,6 +124,10 @@
       font-size: 26px;
       color: #0066cc;
       margin-bottom: 5px;
+      
+      // Ensure blue color is preserved in PDF
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     p {
@@ -134,6 +153,10 @@
     background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
+    
+    // Preserve background in PDF
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 
     .infoRow {
       display: grid;
@@ -167,6 +190,10 @@
       border-bottom: 2px solid #0066cc;
       padding-bottom: 5px;
       margin-bottom: 12px;
+      
+      // Preserve color in PDF
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .textContent {
@@ -177,6 +204,10 @@
       font-size: 14px;
       line-height: 1.6;
       min-height: 50px;
+      
+      // Preserve background in PDF
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
   }
 
@@ -188,6 +219,10 @@
     background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
+    
+    // Preserve background in PDF
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 
     .vitalItem {
       text-align: center;
@@ -216,6 +251,10 @@
       border: 1px solid #ddd;
       border-left: 4px solid #0066cc;
       border-radius: 4px;
+      
+      // Preserve colors in PDF
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
 
       &:last-child {
         margin-bottom: 0;
