@@ -1,0 +1,353 @@
+.prescriptionPage {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin: 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .viewBtn,
+  .printBtn,
+  .backBtn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .viewBtn {
+    background: #17a2b8;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #138496;
+    }
+  }
+
+  .printBtn {
+    background: #28a745;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #218838;
+    }
+  }
+
+  .backBtn {
+    background: #6c757d;
+    color: white;
+
+    &:hover {
+      background: #5a6268;
+    }
+  }
+
+  .successMessage {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .loading,
+  .error {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+  }
+
+  .error {
+    color: #dc3545;
+  }
+
+  /* Prescription Content Styles */
+  .prescriptionContent {
+    background: white;
+    padding: 40px;
+    border: 2px solid #333;
+    margin: 0 auto;
+    max-width: 900px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .clinicHeader {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 26px;
+      color: #0066cc;
+      margin-bottom: 5px;
+    }
+
+    p {
+      font-size: 13px;
+      color: #666;
+      margin: 3px 0;
+    }
+  }
+
+  .prescriptionTitle {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #333;
+    letter-spacing: 2px;
+  }
+
+  .patientInfo {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    .infoRow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .infoItem {
+      font-size: 14px;
+
+      strong {
+        font-weight: 600;
+        color: #333;
+      }
+    }
+  }
+
+  .section {
+    margin-bottom: 20px;
+
+    .sectionTitle {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #0066cc;
+      border-bottom: 2px solid #0066cc;
+      padding-bottom: 5px;
+      margin-bottom: 12px;
+    }
+
+    .textContent {
+      padding: 12px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 50px;
+    }
+  }
+
+  .vitalsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    .vitalItem {
+      text-align: center;
+
+      strong {
+        display: block;
+        color: #666;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+
+      span {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  }
+
+  .medicationsList {
+    .medicationItem {
+      padding: 15px;
+      margin-bottom: 12px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-left: 4px solid #0066cc;
+      border-radius: 4px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .medName {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      .medDetails {
+        font-size: 13px;
+        color: #666;
+        margin: 4px 0;
+
+        strong {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .signatureSection {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+
+    .signatureBox {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+
+      .signatureLine {
+        width: 200px;
+        border-bottom: 2px solid #333;
+        padding-top: 50px;
+        text-align: center;
+
+        .signatureLabel {
+          font-size: 12px;
+          color: #666;
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+
+  .footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+
+  /* Print styles */
+  .noPrint {
+    @media print {
+      display: none !important;
+    }
+  }
+
+  @media print {
+    padding: 0;
+    margin: 0;
+
+    .prescriptionContent {
+      border: none;
+      box-shadow: none;
+      padding: 20px;
+      max-width: 100%;
+    }
+
+    .clinicHeader h1 {
+      color: #000;
+    }
+
+    .section .sectionTitle {
+      color: #000;
+    }
+
+    .medicationsList .medicationItem {
+      border-left-color: #000;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+
+      .actions {
+        width: 100%;
+        flex-direction: column;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+
+    .prescriptionContent {
+      padding: 20px;
+    }
+
+    .patientInfo .infoRow {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .vitalsGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .signatureSection .signatureBox {
+      flex-direction: column;
+      gap: 40px;
+
+      .signatureLine {
+        width: 100%;
+      }
+    }
+  }
+}

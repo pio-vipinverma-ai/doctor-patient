@@ -1,0 +1,70 @@
+@import '../../styles/variables.scss';
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $background-color;
+}
+
+.mainContainer {
+  display: flex;
+  flex: 1;
+  margin-top: $header-height;
+  height: calc(100vh - #{$header-height});
+  overflow: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: $main-content-padding;
+  background-color: $background-color;
+  margin-left: $sidebar-width;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+    padding: $spacing-16;
+  }
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContainer {
+  display: flex;
+  flex: 1;
+  margin-top: 0;
+}
+
+.mainContent {
+  flex: 1;
+  padding: $spacing-24;
+  background-color: $background-color;
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    padding: $spacing-16;
+  }
+
+  @media (max-width: 480px) {
+    padding: $spacing-12;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mainContainer {
+    flex-direction: column;
+  }
+
+  .mainContent {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,98 @@
+@import '../../styles/variables.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-index-fixed;
+  background-color: $primary-color;
+  color: white;
+  padding: 0;
+  box-shadow: $shadow-md;
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+  height: $header-height;
+  display: flex;
+  align-items: center;
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 $spacing-24;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    h1 {
+      font-size: $font-size-xl;
+      margin: 0;
+      font-weight: $font-weight-semibold;
+      white-space: nowrap;
+    }
+  }
+
+  .userSection {
+    display: flex;
+    align-items: center;
+    gap: $spacing-16;
+  }
+
+  .userMenu {
+    display: flex;
+    align-items: center;
+    gap: $spacing-12;
+  }
+
+  .userName {
+    font-size: $font-size-sm;
+    color: rgba(white, 0.9);
+  }
+
+  .logoutBtn {
+    background-color: transparent;
+    border: $border-width-thin solid rgba(white, 0.3);
+    color: white;
+    padding: $spacing-8 $spacing-12;
+    border-radius: $border-radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: all $transition-fast;
+
+    &:hover {
+      background-color: rgba(white, 0.1);
+      border-color: rgba(white, 0.6);
+    }
+
+    &:active {
+      background-color: rgba(white, 0.2);
+    }
+  }
+
+  .guestText {
+    font-size: $font-size-sm;
+    color: rgba(white, 0.7);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    .container {
+      padding: 0 $spacing-16;
+    }
+
+    .logo {
+      h1 {
+        font-size: $font-size-lg;
+      }
+    }
+  }
+}

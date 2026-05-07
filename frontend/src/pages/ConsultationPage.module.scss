@@ -1,0 +1,442 @@
+.consultationPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #666;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+/* Patient Header */
+.patientHeader {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.patientInfo {
+  h2 {
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+    font-size: 24px;
+  }
+}
+
+.patientDetails {
+  display: flex;
+  gap: 12px;
+  color: #7f8c8d;
+  font-size: 14px;
+
+  span {
+    &:nth-child(even) {
+      color: #bdc3c7;
+    }
+  }
+}
+
+/* Form */
+.consultationForm {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #ecf0f1;
+
+  &:last-of-type {
+    border-bottom: none;
+    margin-bottom: 24px;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 16px 0;
+}
+
+/* Vitals Section */
+.vitalsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.vitalField {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-weight: 500;
+    color: #34495e;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+}
+
+.vitalInput {
+  height: 48px;
+  padding: 12px 16px;
+  border: 2px solid #dce4ec;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  }
+
+  &.warning {
+    border-color: #f39c12;
+    background-color: #fef5e7;
+  }
+
+  &.danger {
+    border-color: #e74c3c;
+    background-color: #fadbd8;
+  }
+}
+
+.normalRange {
+  font-size: 12px;
+  color: #95a5a6;
+  margin-top: 4px;
+}
+
+.vitalWarning {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &.warning {
+    background-color: #fef5e7;
+    color: #d68910;
+    border-left: 3px solid #f39c12;
+  }
+
+  &.danger {
+    background-color: #fadbd8;
+    color: #c0392b;
+    border-left: 3px solid #e74c3c;
+  }
+}
+
+/* Text Areas */
+.textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #dce4ec;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  }
+
+  &::placeholder {
+    color: #bdc3c7;
+  }
+}
+
+/* Medications Section */
+.addMedicationBtn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.medicationList {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.medicationItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.medicationInfo {
+  flex: 1;
+}
+
+.medicationName {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.medicationDetails {
+  color: #7f8c8d;
+  font-size: 13px;
+}
+
+.removeMedicationBtn {
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #e74c3c;
+    color: white;
+  }
+}
+
+/* Medication Form */
+.medicationForm {
+  margin-top: 16px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dce4ec;
+}
+
+.medicationFormGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.medicationFormField {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-weight: 500;
+    color: #34495e;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  input, select {
+    height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #dce4ec;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+    }
+  }
+}
+
+.autocompleteWrapper {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #dce4ec;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.suggestionItem {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f0f3f5;
+  }
+}
+
+.medicationFormActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelBtn, .addBtn {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn {
+  background-color: transparent;
+  color: #7f8c8d;
+  border: 1px solid #bdc3c7;
+
+  &:hover {
+    background-color: #ecf0f1;
+  }
+}
+
+.addBtn {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #229954;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 2px solid #ecf0f1;
+}
+
+.cancelButton, .saveButton {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: #7f8c8d;
+  border: 2px solid #bdc3c7;
+
+  &:hover {
+    background-color: #ecf0f1;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.saveButton {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #229954;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+/* Error Messages */
+.error {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .consultationPage {
+    padding: 12px;
+  }
+
+  .vitalsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .medicationFormGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formActions {
+    flex-direction: column;
+
+    .cancelButton, .saveButton {
+      width: 100%;
+    }
+  }
+}

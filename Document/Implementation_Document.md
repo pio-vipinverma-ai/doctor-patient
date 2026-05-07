@@ -14,11 +14,12 @@
 3. [Database Design & Schema](#3-database-design--schema)
 4. [API Specifications](#4-api-specifications)
 5. [Frontend Architecture](#5-frontend-architecture)
-6. [Backend Implementation Details](#6-backend-implementation-details)
-7. [Testing Strategy](#7-testing-strategy)
-8. [Deployment & Operations](#8-deployment--operations)
-9. [Development Guidelines](#9-development-guidelines)
-10. [Common Patterns & Examples](#10-common-patterns--examples)
+6. [UI Design](#6-ui-design)
+7. [Backend Implementation Details](#7-backend-implementation-details)
+8. [Testing Strategy](#8-testing-strategy)
+9. [Deployment & Operations](#9-deployment--operations)
+10. [Development Guidelines](#10-development-guidelines)
+11. [Common Patterns & Examples](#11-common-patterns--examples)
 
 ---
 
@@ -1227,7 +1228,737 @@ interface NotificationContextType {
 
 ---
 
-## 6. Backend Implementation Details
+## 6. UI Design
+
+### UI Design Principles (Based on BRD Requirements)
+
+The Patient Management Application UI is designed for **fast clinical workflows** with the following core principles:
+
+1. **Simplicity & Minimalism**
+   - Minimal, clutter-free interface optimized for speed
+   - Only essential UI elements visible; progressive disclosure of advanced features
+   - Single-user focus (no multi-user complexity)
+   - Target: Doctor completes consultation within 2–3 minutes
+
+2. **Fast Data Entry**
+   - Large, touch-friendly input fields (48px minimum height)
+   - Auto-focus on next field after input
+   - Keyboard shortcuts for common actions
+   - Quick patient search with typeahead (< 100ms response)
+   - One-click actions where possible
+
+3. **Accessibility & Readability**
+   - High contrast (WCAG AA compliant)
+   - Readable fonts (16px minimum for body text)
+   - Clear hierarchy with whitespace
+   - Accessible color coding (not color-only feedback)
+
+4. **Consistency**
+   - Uniform component styling across all pages
+   - Consistent layout (Header, Sidebar, Main Content)
+   - Predictable navigation patterns
+   - Reusable component library
+
+5. **Feedback & Validation**
+   - Immediate form validation feedback
+   - Clear error messages with actionable suggestions
+   - Loading indicators for async operations
+   - Toast notifications for success/warning/error
+   - Confirmation dialogs for critical actions
+
+---
+
+### Design System
+
+#### Color Palette
+
+**Primary Colors:**
+- **Primary Blue:** `#0066CC` (CTAs, links, focus states)
+- **Success Green:** `#28A745` (Successful actions, positive feedback)
+- **Error Red:** `#DC3545` (Errors, warnings, critical data)
+- **Warning Amber:** `#FFC107` (Warnings, vital alerts)
+- **Info Blue:** `#17A2B8` (Informational messages)
+
+**Neutral Colors:**
+- **Background White:** `#FFFFFF`
+- **Surface Light Gray:** `#F5F5F5` (Cards, panels)
+- **Border Light Gray:** `#E0E0E0` (Borders)
+- **Text Dark Gray:** `#333333` (Body text)
+- **Text Medium Gray:** `#666666` (Secondary text)
+- **Text Light Gray:** `#999999` (Placeholder, disabled text)
+
+**Semantic Colors:**
+- **Appointment Scheduled:** `#0066CC` (Blue)
+- **Appointment Completed:** `#28A745` (Green)
+- **Appointment Cancelled:** `#999999` (Gray)
+- **Appointment No-Show:** `#DC3545` (Red)
+- **Vital Alert (Abnormal):** `#FFC107` (Amber)
+
+#### Typography
+
+**Font Family:** `Segoe UI, Tahoma, Arial, sans-serif` (Windows-optimized)
+
+**Font Sizes & Usage:**
+| Usage | Size | Weight | Line Height |
+|-------|------|--------|-------------|
+| Page Title | 28px | 600 (SemiBold) | 1.2 |
+| Section Heading | 20px | 600 (SemiBold) | 1.3 |
+| Subsection Heading | 16px | 600 (SemiBold) | 1.4 |
+| Body Text | 14px | 400 (Regular) | 1.5 |
+| Small Text (Labels, Help) | 12px | 400 (Regular) | 1.4 |
+| Form Labels | 14px | 500 (Medium) | 1.4 |
+| Button Text | 14px | 500 (Medium) | 1.4 |
+| Table Data | 14px | 400 (Regular) | 1.4 |
+
+#### Spacing & Layout Grid
+
+**Base Unit:** 8px (consistent spacing)
+
+**Spacing Scale:**
+- XS: 4px (micro-spacing)
+- S: 8px (compact spacing)
+- M: 16px (standard spacing)
+- L: 24px (section spacing)
+- XL: 32px (major section spacing)
+- 2XL: 48px (page-level spacing)
+
+**Layout Grid:** 12-column responsive grid
+- Desktop (≥1024px): 12 columns, 16px gutter
+- Tablet (768px–1023px): 8 columns, 12px gutter
+- Mobile (< 768px): 4 columns, 8px gutter
+
+#### Component Styling
+
+**Buttons:**
+- **Primary Button:** Blue background, white text, 8px border-radius, 12px padding (vertical), 16px (horizontal)
+- **Secondary Button:** Gray background, dark text, 8px border-radius
+- **Danger Button:** Red background, white text, 8px border-radius (for destructive actions)
+- **States:** Default, Hover (darker shade), Active (pressed), Disabled (grayed out, 50% opacity)
+- **Size:** Small (32px height), Medium (40px height), Large (48px height)
+
+**Input Fields:**
+- **Height:** 40px (forms), 48px (consultation vitals capture)
+- **Border:** 1px solid `#E0E0E0`, rounded corners 4px
+- **Padding:** 8px vertical, 12px horizontal
+- **Focus:** Blue border (2px), subtle shadow
+- **Error State:** Red border, error message below
+- **Disabled:** Gray background, cursor not-allowed
+
+**Cards & Panels:**
+- **Background:** White or light gray (`#F5F5F5`)
+- **Border:** 1px solid `#E0E0E0`
+- **Border Radius:** 8px
+- **Padding:** 16px (compact) or 24px (spacious)
+- **Box Shadow:** 0 1px 3px rgba(0, 0, 0, 0.1) on hover
+
+**Tables:**
+- **Header Background:** Light gray (`#F5F5F5`)
+- **Row Height:** 48px (clickable rows), 40px (data only)
+- **Borders:** 1px solid `#E0E0E0` between rows
+- **Alternating Rows:** White and very light gray for readability
+- **Hover State:** Light blue background, cursor pointer
+
+---
+
+### Page Layout Specifications
+
+#### Layout Structure
+
+All authenticated pages follow this standard layout:
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                      HEADER (60px)                              │
+│  Logo | App Name | User Menu (Profile, Settings, Logout)     │
+├──────────┬────────────────────────────────────────────────────┤
+│          │                                                    │
+│ SIDEBAR  │           MAIN CONTENT AREA                        │
+│ (240px)  │                                                    │
+│          │  - Page Title & Breadcrumb (if applicable)         │
+│ Menu     │  - Action Buttons (New, Search, Export, etc.)      │
+│ Items    │  - Content (Tables, Forms, Cards, etc.)            │
+│          │  - Footer (pagination, status, etc.)               │
+│          │                                                    │
+└──────────┴────────────────────────────────────────────────────┘
+```
+
+**Header (Fixed, 60px height):**
+- Left: Logo + App Name
+- Right: User profile menu (Name, Settings dropdown, Logout button)
+- Background: Dark blue or white with border
+- Sticky on scroll
+
+**Sidebar (Collapsible, 240px width):**
+- Primary navigation menu
+- Menu items: Dashboard, Patients, Appointments, Consultations, History, Export, Settings
+- Active item highlighted in blue
+- Collapsible on mobile to hamburger menu
+- Fixed or sticky on scroll
+
+**Main Content Area:**
+- Flexible, remaining width after sidebar
+- Padding: 24px
+- Max-width: 1400px (for readability on ultra-wide screens)
+- White background
+
+---
+
+#### Screen-by-Screen Layouts
+
+**1. Login Page (Public)**
+```
+┌──────────────────────────────────────┐
+│                                      │
+│   Centered Card (400px width)        │
+│  ┌──────────────────────────────┐   │
+│  │  Logo                        │   │
+│  │  "Patient Management System"│   │
+│  │                              │   │
+│  │  Username Field              │   │
+│  │  Password Field              │   │
+│  │  [Login Button]              │   │
+│  │  Error message (if any)      │   │
+│  └──────────────────────────────┘   │
+│                                      │
+└──────────────────────────────────────┘
+
+Responsive: 90% width on mobile, full-height center
+```
+
+**2. Dashboard Page (Home)**
+```
+Title: "Today's Schedule"
+Date display: "Monday, May 10, 2026"
+
+Layout:
+- Quick Stats Row (3 columns):
+  [Total Appointments: 12] [Completed: 8] [Pending: 4]
+
+- Search Bar: "Search patient by name or phone..."
+
+- Appointments List (Table):
+  Columns: Time | Patient Name | Age | Phone | Reason | Status | Actions
+  Rows: Each appointment with inline action buttons
+  - View Patient Profile
+  - Start Consultation
+  - Cancel Appointment
+  - Mark as No-Show
+
+- Right Sidebar:
+  Quick Actions:
+  [+ New Appointment]
+  [+ Add Patient]
+  [Search Patient]
+  [View History]
+```
+
+**3. Patient Search Page**
+```
+Title: "Search Patient"
+
+Layout:
+- Large search bar (full width)
+  Placeholder: "Search by name, phone, or ID..."
+  Real-time typeahead suggestions
+
+- Search Results:
+  Cards (or rows) showing:
+  - Patient Name | Age | Gender | Phone | Last Visit
+  - Click to view full profile
+  - [View Profile] [Schedule Appointment] [Start Consultation]
+
+- Recent Patients (if no search):
+  Last 10 visited patients for quick access
+
+- Responsive: Stacked cards on mobile
+```
+
+**4. Patient Profile Page**
+```
+Layout:
+- Header Section:
+  Patient Name (Large)
+  Age | Gender | Phone | Email | DOB
+  [Edit Patient] [Schedule Appointment] [Start Consultation]
+
+- Tabs:
+  ├── Profile (Demographics, Contact)
+  ├── Appointments (List of scheduled appointments)
+  ├── History (Past consultations, filterable by date)
+  └── Documents (Prescriptions, exports)
+
+- Profile Tab Content:
+  Name, Age, DOB, Gender, Phone, Email, Address
+  Edit button for each section
+
+- History Tab:
+  Table with columns:
+  Date | Temp | BP | Pulse | Diagnosis | Medications | Actions
+  [View Details] [Print Prescription] [Reuse Diagnosis]
+```
+
+**5. Consultation Page (Complex Form)**
+```
+Title: "New Consultation"
+Patient Info Bar (Fixed at top): Patient Name | Age | Last Visit
+
+Layout (Progressive sections):
+
+Section 1: VITALS (Mandatory, Large Input Fields)
+  Temperature: [ ______ ] °F  [Alert if abnormal]
+  BP Systolic: [ ______ ] mmHg
+  BP Diastolic: [ ______ ] mmHg
+  Pulse: [ ______ ] BPM
+  [Alert icon] if any vital is outside normal range
+
+Section 2: COMPLAINTS
+  Textarea: "Enter patient complaints/symptoms"
+  Placeholder: "e.g., Fever, cough, body ache for 3 days"
+
+Section 3: DIAGNOSIS
+  Textarea: "Enter diagnosis and clinical notes"
+  Placeholder: "e.g., Viral fever with URI symptoms"
+
+Section 4: MEDICATIONS (Add/Remove)
+  [+ Add Medication]
+  
+  Medication 1:
+  Name: [ ______ ] (with autocomplete)
+  Dosage: [ ______ ] (e.g., 500mg)
+  Frequency: [ Dropdown: Once daily / Twice daily / ... ]
+  Duration: [ ______ ] (e.g., 5 days)
+  Instructions: [ ______ ] (e.g., After food)
+  [Remove]
+
+  Medication List Preview:
+  - Shows all added medications in a clean list format
+
+Bottom Actions:
+  [Save Consultation] [Generate Prescription] [Cancel]
+
+Responsive: Stacked sections on mobile, maintains large input fields
+```
+
+**6. Prescription Page**
+```
+Prescription Template (Print-optimized):
+
+┌────────────────────────────────────────┐
+│     CLINIC HEADER (Logo, Name)         │
+│   Address, Phone, Website              │
+├────────────────────────────────────────┤
+│         PRESCRIPTION                   │
+├────────────────────────────────────────┤
+│ Patient: John Doe                      │
+│ DOB: 15-Jan-1980 (Age: 46)            │
+│ Date: 10-May-2026                      │
+│ Consultation Date: 10-May-2026         │
+├────────────────────────────────────────┤
+│ VITALS:                                │
+│ Temperature: 101.5°F                   │
+│ BP: 130/85 mmHg | Pulse: 92 BPM       │
+├────────────────────────────────────────┤
+│ DIAGNOSIS:                             │
+│ Viral fever with URI symptoms          │
+├────────────────────────────────────────┤
+│ MEDICATIONS:                           │
+│ 1. Paracetamol 500mg - Twice daily     │
+│    for 5 days - After food             │
+│ 2. Cough Syrup 10ml - Thrice daily     │
+│    for 7 days - After food             │
+├────────────────────────────────────────┤
+│ NOTES:                                 │
+│ Rest for 2 days. Drink plenty of       │
+│ water. Follow-up if symptoms persist.  │
+├────────────────────────────────────────┤
+│                                        │
+│ Doctor Signature: ________________     │
+│                                        │
+└────────────────────────────────────────┘
+
+Actions (Not printed):
+[Print] [Download PDF] [Email] [Share]
+```
+
+**7. Patient History Page**
+```
+Title: "Patient Visit History"
+
+Layout:
+- Patient Name and quick info
+- Date Range Filter:
+  [From Date] [To Date] [Filter Button]
+
+- History Table:
+  Columns: Date | Temp | BP | Pulse | Diagnosis | Medicines | Actions
+  Rows: Each consultation record
+  Click on row to expand details
+  [View Full] [Print Prescription]
+
+- Responsive: Horizontal scroll on mobile, or card layout
+```
+
+**8. Data Export Page**
+```
+Title: "Export Data"
+
+Layout:
+- Export Type Selection:
+  ○ Export Patients
+  ○ Export Consultations
+  ○ Export Prescriptions
+
+- Format Selection:
+  ○ CSV
+  ○ PDF
+
+- Filters:
+  Date Range: [From Date] [To Date]
+  (For consultations/prescriptions only)
+
+- [Export Button]
+- Recently exported files list (with download links)
+
+Responsive: Stacked on mobile
+```
+
+---
+
+### Component Design Patterns
+
+#### Button Component Pattern
+```
+Props: variant, size, disabled, loading, onClick
+
+Variants:
+- "primary" (Blue background, white text)
+- "secondary" (Gray background)
+- "danger" (Red background)
+- "ghost" (Transparent, blue text)
+
+Sizes:
+- "small" (32px)
+- "medium" (40px)
+- "large" (48px)
+
+Usage Examples:
+<Button variant="primary" size="large">Save Consultation</Button>
+<Button variant="danger" size="medium" onClick={deletePatient}>Delete</Button>
+<Button variant="ghost" loading={isSubmitting}>Processing...</Button>
+```
+
+#### Input/Form Field Pattern
+```
+Props: type, label, placeholder, value, onChange, error, required, disabled
+
+Features:
+- Built-in label above field
+- Error message below (red text)
+- Required indicator (*)
+- Clear validation feedback
+
+Usage:
+<Input
+  label="Patient Name"
+  placeholder="Enter full name"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  error={errors.name}
+  required
+/>
+```
+
+#### Modal/Dialog Pattern
+```
+Props: isOpen, onClose, title, children, confirmText, onConfirm
+
+Usage for confirmations:
+<Modal
+  isOpen={showConfirm}
+  title="Confirm Action"
+  onClose={() => setShowConfirm(false)}
+  confirmText="Delete"
+  onConfirm={handleDelete}
+>
+  Are you sure you want to delete this patient?
+</Modal>
+```
+
+#### Toast Notification Pattern
+```
+Props: type ('success', 'error', 'warning', 'info'), message, duration
+
+Automatic dismiss after duration (default: 5 seconds)
+
+Usage:
+addNotification('success', 'Consultation saved successfully')
+addNotification('error', 'Failed to save. Please try again.')
+```
+
+#### Table Component Pattern
+```
+Props: columns, data, loading, pagination, sortable, selectable
+
+Columns format:
+[
+  { key: 'name', label: 'Patient Name', sortable: true },
+  { key: 'age', label: 'Age', width: '80px' },
+  { key: 'actions', label: 'Actions', render: (row) => <ActionButtons /> }
+]
+
+Features:
+- Column sorting
+- Pagination
+- Row selection (checkboxes)
+- Responsive horizontal scroll
+- Alternating row colors
+```
+
+---
+
+### Form Design & Validation
+
+#### Consultation Form Validation Strategy
+
+**Real-time Validation:**
+- Vitals range checking (display warning if outside normal ranges, but allow save)
+- Required field indicators
+- Character count for text areas (max limits)
+- Format validation for phone numbers, emails
+
+**Pre-Submission Validation:**
+- All required fields populated
+- At least one medication entered
+- All vitals within acceptable ranges (warning, not blocking)
+
+**Error Handling:**
+```
+Validation Rules:
+- Temperature: 95°F–105°F (normal), warning outside range
+- BP: Systolic 90–180 mmHg, Diastolic 60–120 mmHg
+- Pulse: 40–150 BPM (warning outside)
+- Medications: At least 1 required
+- Diagnosis: Min 10 characters
+
+Error Display:
+- Red border around field
+- Error message below field
+- Icon with tooltip explaining rule
+```
+
+#### Patient Registration Form
+
+**Fields:**
+- Name (Required, max 100 chars)
+- DOB / Age (Required, valid date)
+- Gender (Required, dropdown: M/F/Other)
+- Phone (Required, unique, formatted)
+- Email (Optional, valid email)
+- Address (Optional, max 500 chars)
+
+**Validation:**
+```
+- Name: Non-empty, letters/spaces only
+- DOB: Valid date, age >= 0 and <= 150
+- Phone: Unique in database, matches regex
+- Email: Valid email format if provided
+```
+
+---
+
+### User Flow Diagrams
+
+#### Login Flow
+```
+Start → Login Page
+  ↓
+Enter Username & Password
+  ↓
+[Valid] → Dashboard
+  ↓
+Logout → Login Page
+
+[Invalid] → Show Error → Retry
+```
+
+#### Appointment Creation Flow
+```
+Dashboard → [+ New Appointment]
+  ↓
+Search Patient (Typeahead)
+  ↓
+Select Patient → Patient Selected
+  ↓
+Pick Date & Time → Check availability
+  ↓
+[Available] → Enter Reason → [Save]
+  ↓
+Appointment Created → Dashboard
+  ↓
+[Not Available] → Pick another time → Retry
+```
+
+#### Consultation Flow (Critical)
+```
+Dashboard (Appointment List)
+  ↓
+[Start Consultation] → Consultation Form
+  ↓
+Enter Vitals (Mandatory) → Vitals Captured
+  ↓
+Enter Complaints → Complaints Recorded
+  ↓
+Enter Diagnosis → Diagnosis Recorded
+  ↓
+Add Medications (At least 1) → Medications Listed
+  ↓
+[Save Consultation] → Validate & Save
+  ↓
+[Success] → Generate Prescription Page
+  ↓
+[View/Print] or [Export] → Options
+  ↓
+Back to Dashboard or Patient History
+
+[Validation Error] → Highlight field → Retry
+```
+
+#### Patient Search Flow
+```
+Dashboard / Any Page → [Search Patient]
+  ↓
+Type name or phone (Typeahead)
+  ↓
+Results show as you type (< 100ms)
+  ↓
+Click on patient → Patient Profile
+  ↓
+Actions: View, Appointment, Consultation
+```
+
+---
+
+### Responsive Design Requirements
+
+#### Breakpoints
+- **Desktop:** ≥1024px (Primary)
+- **Tablet:** 768px–1023px (Optimized)
+- **Mobile:** < 768px (Stacked layout)
+
+#### Adaptive Layouts
+
+**Desktop (≥1024px):**
+- Sidebar visible (240px fixed)
+- Multi-column tables
+- Side-by-side components
+- Full header with all options
+
+**Tablet (768px–1023px):**
+- Sidebar collapsible (hamburger menu)
+- Tables horizontal scroll
+- Stacked forms (some side-by-side if space)
+- Simplified header
+
+**Mobile (< 768px):**
+- Sidebar hidden (hamburger navigation)
+- All tables scrollable or card layout
+- Forms fully stacked (one field per row)
+- Larger touch targets (48px minimum)
+- Simplified header (logo + menu)
+- Full-width modals/dialogs
+- Bottom sheet for actions
+
+#### Touch Optimization
+- Minimum touch target size: 48px × 48px
+- Minimum spacing between touch targets: 8px
+- Larger input fields on mobile (48px height)
+- Tap-friendly buttons (not small hover-only options)
+
+---
+
+### Accessibility & WCAG Compliance
+
+#### Color Contrast Requirements
+- Normal text: Minimum 4.5:1 (WCAG AA)
+- Large text (18px+): Minimum 3:1 (WCAG AA)
+- UI components & borders: Minimum 3:1 (WCAG AA)
+- Do NOT rely on color alone for information (use icons/text)
+
+#### Keyboard Navigation
+- All interactive elements accessible via Tab key
+- Logical tab order (left-to-right, top-to-bottom)
+- Skip links to main content
+- Focus indicators visible (not hidden)
+- Escape key closes modals/dropdowns
+- Enter key submits forms
+
+#### Screen Reader Support (WCAG 2.1 Level A)
+- Semantic HTML: Proper heading levels (h1, h2, h3...)
+- Form labels associated with inputs (`<label for="id"/>`)
+- ARIA labels for icon-only buttons
+- ARIA live regions for dynamic notifications
+- Proper table headers (`<thead>`, `<th>`)
+- Alt text for images (if any)
+
+#### Text & Readability
+- Minimum font size: 14px (body text)
+- Line height: 1.5 (150% spacing)
+- Line length: < 80 characters for readability
+- Avoid all-caps text (harder to read)
+- Use plain language, avoid jargon
+
+---
+
+### Performance Optimization (UI Layer)
+
+#### Page Load Performance
+**Target: < 2 seconds page load**
+- Code splitting: Lazy load pages (Dashboard, History, etc.)
+- Image optimization: Use SVG icons, compress images
+- CSS minification & tree-shaking
+- Critical CSS inline in `<head>`
+- Defer non-critical JavaScript
+- Cache static assets (1-year expiry)
+
+#### Search Typeahead Performance
+**Target: < 100ms response for patient search**
+- Backend: Database index on `patients(name)` and `patients(phone)`
+- API request debouncing (300ms)
+- Frontend result caching (5-minute TTL)
+- Limit results to 10 (pagination)
+- Optimized database query (select only needed fields)
+
+#### Form Input Performance
+- Debounce onChange handlers (300ms)
+- Avoid re-rendering entire form on each keystroke
+- Use `useCallback` for event handlers
+- Memoize expensive computations (`useMemo`)
+
+#### Component Rendering
+- React.memo for list items (prevents re-render on parent update)
+- Virtual scrolling for long tables (1000+ rows)
+- Lazy load images (Intersection Observer)
+
+---
+
+### Wireframe Summary
+
+Key pages with wireframe dimensions:
+
+| Page | Layout | Key Elements | Performance |
+|------|--------|--------------|-------------|
+| Login | Single column, centered | Logo, form, error | Instant |
+| Dashboard | Sidebar + Content | Stats, table, actions | < 2s |
+| Patient Search | Full-width | Search bar, results | < 100ms search |
+| Patient Profile | Tabs + Content | Info, tabs, history | < 1s |
+| Consultation | Form | 5 sections, validations | Instant input |
+| Prescription | Print-ready | Template, actions | < 1s |
+| History | Table + Filter | Date filter, table | < 2s |
+| Export | Form | Type, format, filter | < 3s export |
+
+---
+
+## 7. Backend Implementation Details
 
 ### Error Handling Strategy
 
@@ -1370,7 +2101,7 @@ export class PatientService {
 
 ---
 
-## 7. Testing Strategy
+## 8. Testing Strategy
 
 ### Unit Testing Example
 
@@ -1491,7 +2222,7 @@ describe('Patient Routes', () => {
 
 ---
 
-## 8. Deployment & Operations
+## 9. Deployment & Operations
 
 ### Docker Setup
 
@@ -1630,7 +2361,7 @@ VITE_LOG_LEVEL=error
 
 ---
 
-## 9. Development Guidelines
+## 10. Development Guidelines
 
 ### Code Style & Standards
 
@@ -1673,7 +2404,7 @@ Examples:
 
 ---
 
-## 10. Common Patterns & Examples
+## 11. Common Patterns & Examples
 
 ### API Interceptor (Axios)
 

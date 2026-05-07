@@ -1,0 +1,198 @@
+.searchPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #333;
+    font-weight: 600;
+  }
+}
+
+.createButton {
+  padding: 12px 24px;
+  background: #0066CC;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #0052a3;
+  }
+}
+
+.searchContainer {
+  margin-bottom: 32px;
+}
+
+.searchBox {
+  position: relative;
+  max-width: 600px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  font-size: 18px;
+  border: 2px solid #d0d0d0;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #0066CC;
+    box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.spinner {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #0066CC;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.results {
+  min-height: 400px;
+}
+
+.error {
+  padding: 16px;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 6px;
+  color: #c33;
+
+  p {
+    margin: 0;
+  }
+}
+
+.noResults {
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+
+  p {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+}
+
+.createFromSearchButton {
+  padding: 12px 24px;
+  background: #0066CC;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #0052a3;
+  }
+}
+
+.patientList {
+  max-width: 800px;
+}
+
+.resultCount {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 64px 24px;
+  color: #999;
+
+  p {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+}
+
+.emptyIcon {
+  opacity: 0.5;
+}
+
+.formContainer {
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .searchPage {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    .createButton {
+      width: 100%;
+    }
+  }
+
+  .searchInput {
+    font-size: 16px;
+    padding: 14px 14px 14px 44px;
+  }
+
+  .results {
+    min-height: 300px;
+  }
+}

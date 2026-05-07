@@ -1,0 +1,147 @@
+@import '../../styles/variables.scss';
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: white;
+  box-shadow: $shadow-md;
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  height: calc(100vh - #{$header-height});
+  overflow-y: auto;
+  z-index: $z-index-sticky;
+}
+
+.nav {
+  padding: $spacing-16 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-12;
+  padding: $spacing-12 $spacing-24;
+  color: $text-primary;
+  text-decoration: none;
+  transition: all $transition-fast;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background-color: $primary-light;
+    color: $primary-color;
+  }
+
+  &.active {
+    background-color: $primary-light;
+    color: $primary-color;
+    border-left-color: $primary-color;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.icon {
+  font-size: $font-size-xl;
+  width: 24px;
+  text-align: center;
+}
+
+.label {
+  font-size: $font-size-base;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform $transition-normal;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: $neutral-100;
+  border-right: $border-width-thin solid $border-color;
+  padding: $spacing-16;
+  height: calc(100vh - $header-height);
+  overflow-y: auto;
+  transition: width $transition-normal;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    left: -$sidebar-width;
+    top: $header-height;
+    height: calc(100vh - $header-height);
+    z-index: $z-index-dropdown;
+    transition: left $transition-normal;
+  }
+
+  &.open {
+    @media (max-width: 768px) {
+      left: 0;
+    }
+  }
+}
+
+.nav {
+  padding: 0;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+
+  li {
+    margin: 0;
+  }
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: $spacing-12 $spacing-16;
+  border-radius: $border-radius-md;
+  color: $text-primary;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $primary-light;
+    color: $primary-color;
+  }
+
+  &.active {
+    background-color: $primary-color;
+    color: white;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: $sidebar-width-collapsed;
+    padding: $spacing-8;
+
+    .navList {
+      gap: $spacing-4;
+    }
+
+    .navLink {
+      padding: $spacing-12;
+      justify-content: center;
+      font-size: 0;
+
+      &::before {
+        font-size: $font-size-base;
+      }
+    }
+  }
+}
