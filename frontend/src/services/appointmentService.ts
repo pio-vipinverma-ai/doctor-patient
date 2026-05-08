@@ -89,6 +89,27 @@ export const getAppointmentsByDate = async (
 };
 
 /**
+ * Get appointments for a specific patient
+ */
+export const getAppointmentsByPatient = async (
+  patientId: string,
+  status?: string
+): Promise<AppointmentListItem[]> => {
+  try {
+    const params: any = { patientId };
+    if (status) params.status = status;
+
+    const response = await axios.get(`${API_URL}/api/appointments`, {
+      params,
+      headers: getAuthHeaders()
+    });
+    return response.data.appointments;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to fetch appointments');
+  }
+};
+
+/**
  * Get appointment by ID
  */
 export const getAppointmentById = async (appointmentId: string): Promise<Appointment> => {

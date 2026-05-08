@@ -6,7 +6,12 @@ export const ToastContainer: React.FC = () => {
   const { toasts, removeToast } = useToast();
 
   return (
-    <div className={styles.toastContainer}>
+    <div 
+      className={styles.toastContainer}
+      role="region"
+      aria-live="polite"
+      aria-label="Notifications"
+    >
       {toasts.map((toast) => (
         <Toast
           key={toast.id}

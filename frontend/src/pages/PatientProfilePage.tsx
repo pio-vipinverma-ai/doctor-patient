@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPatientById, updatePatient, Patient, PatientInput } from '../services/patientService';
+import { getAppointmentsByPatient, AppointmentListItem } from '../services/appointmentService';
 import { PatientForm } from '../components/PatientForm';
+import { AppointmentList } from '../components/AppointmentList';
 import { Layout } from '../components/layout/Layout';
+import { useToast } from '../context/ToastContext';
 import styles from './PatientProfilePage.module.scss';
 
 type TabType = 'profile' | 'appointments' | 'history';
@@ -10,8 +13,11 @@ type TabType = 'profile' | 'appointments' | 'history';
 export const PatientProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [patient, setPatient] = useState<Patient | null>(null);
+  const [appointments, setAppointments] = useState<AppointmentListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingAppointments, setIsLoadingAppointments] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [showEditForm, setShowEditForm] = useState(false);
@@ -37,6 +43,26 @@ export const PatientProfilePage: React.FC = () => {
 
     loadPatient();
   }, [id]);
+
+  useEffect(() => {
+    if (activeTab === 'appointments' && id) {
+      loadAppointments();
+    }
+  }, [activeTab, id]);
+
+  const loadAppointments = async () => {
+    if (!id) return;
+    
+    setIsLoadingAppointments(true);
+    try {
+      const appointmentData = await getAppointmentsByPatient(id);
+      setAppointments(appointmentData);
+    } catch (err: any) {
+      showToast(err.message || 'Failed to load appointments', 'error');
+    } finally {
+      setIsLoadingAppointments(false);
+    }
+  };
 
   const handleUpdatePatient = async (updates: PatientInput) => {
     if (!id) return;
@@ -237,14 +263,48 @@ export const PatientProfilePage: React.FC = () => {
         )}
 
         {activeTab === 'appointments' && (
-          <div className={styles.comingSoon}>
-            <p>Appointments feature coming soon...</p>
+          <div className={styles.appointmentsTab}>
+            <div className={styles.appointmentsHeader}>
+              <h3>Patient Appointments</h3>
+              <button 
+                className={styles.scheduleButton}
+                onClick={() => navigate(`/appointments/new?patientId=${id}`)}
+                aria-label="Schedule new appointment"
+              >
+                + Schedule Appointment
+              </button>
+            </div>
+            
+            {isLoadingAppointments ? (
+              <div className={styles.loading}>Loading appointments...</div>
+            ) : appointments.length === 0 ? (
+              <div className={styles.emptyState}>
+                <p>No appointments found for this patient.</p>
+                <button 
+                  className={styles.scheduleButton}
+                  onClick={() => navigate(`/appointments/new?patientId=${id}`)}
+                >
+                  Schedule First Appointment
+                </button>
+              </div>
+            ) : (
+              <AppointmentList 
+                appointments={appointments} 
+                onUpdate={loadAppointments}
+              />
+            )}
           </div>
         )}
 
         {activeTab === 'history' && (
-          <div className={styles.comingSoon}>
-            <p>Consultation history feature coming soon...</p>
+          <div className={styles.historyTab}>
+            <p>View complete consultation history with date filtering, expandable details, and prescription management.</p>
+            <button 
+              className={styles.viewHistoryButton}
+              onClick={() => navigate(`/patients/${patient.id}/history`)}
+            >
+              View Full History →
+            </button>
           </div>
         )}
       </div>

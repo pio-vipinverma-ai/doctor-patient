@@ -228,13 +228,92 @@
   color: #333;
 }
 
-.comingSoon {
+// Appointments Tab
+.appointmentsTab {
+  padding: 24px;
+}
+
+.appointmentsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #212121;
+    margin: 0;
+  }
+}
+
+.scheduleButton {
+  padding: 10px 20px;
+  background: #0066CC;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #0052a3;
+  }
+
+  &:focus {
+    outline: 2px solid #0066CC;
+    outline-offset: 2px;
+  }
+}
+
+.emptyState {
   text-align: center;
-  padding: 64px 24px;
-  color: #999;
+  padding: 60px 24px;
+  background: #f5f5f5;
+  border-radius: 8px;
 
   p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+}
+
+// History Tab
+.historyTab {
+  text-align: center;
+  padding: 64px 24px;
+  
+  p {
     font-size: 18px;
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+}
+
+.viewHistoryButton {
+  padding: 12px 32px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 

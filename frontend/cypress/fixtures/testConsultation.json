@@ -1,0 +1,24 @@
+{
+  "temperature": 98.6,
+  "bpSystolic": 120,
+  "bpDiastolic": 80,
+  "pulse": 72,
+  "complaints": "Headache and mild fever - Cypress E2E Test",
+  "diagnosis": "Viral infection",
+  "medications": [
+    {
+      "name": "Paracetamol",
+      "dosage": "500mg",
+      "frequency": "Twice daily",
+      "duration": "5 days",
+      "instructions": "Take after meals"
+    },
+    {
+      "name": "Amoxicillin",
+      "dosage": "250mg",
+      "frequency": "Three times daily",
+      "duration": "7 days",
+      "instructions": "Complete the course"
+    }
+  ]
+}

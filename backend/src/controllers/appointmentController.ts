@@ -71,7 +71,7 @@ export const createAppointmentController = async (req: Request, res: Response): 
 
 /**
  * Get appointments by date
- * GET /api/appointments?date=YYYY-MM-DD&status=Scheduled
+ * GET /api/appointments?date=YYYY-MM-DD&status=Scheduled&patientId=uuid
  */
 export const getAppointmentsController = async (req: Request, res: Response): Promise<void> => {
   try {

@@ -113,17 +113,24 @@ export const getConsultationById = async (consultationId: string): Promise<Consu
 export const getPatientConsultations = async (
   patientId: string,
   limit: number = 10,
-  offset: number = 0
-): Promise<{ consultations: ConsultationHistoryItem[]; total: number; pages: number }> => {
+  offset: number = 0,
+  fromDate?: string,
+  toDate?: string
+): Promise<{ consultations: ConsultationHistoryItem[]; total: number; pages: number; currentPage: number }> => {
   try {
+    const params: any = { limit, offset };
+    if (fromDate) params.from = fromDate;
+    if (toDate) params.to = toDate;
+    
     const response = await axios.get(`${API_URL}/api/patients/${patientId}/consultations`, {
-      params: { limit, offset },
+      params,
       headers: getAuthHeaders()
     });
     return {
       consultations: response.data.consultations,
       total: response.data.total,
-      pages: response.data.pages
+      pages: response.data.pages,
+      currentPage: response.data.currentPage || Math.floor(offset / limit) + 1
     };
   } catch (error: any) {
     throw new Error(error.response?.data?.error || 'Failed to fetch consultation history');

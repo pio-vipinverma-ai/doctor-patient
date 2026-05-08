@@ -1,0 +1,15 @@
+﻿Date,Patient,Age,Temperature,BP,Pulse,Diagnosis,Medications
+2026-05-08,Alice Johnson,41,98.0°F,125/85,75,test,Paracetamol - Twice daily for 3 days
+2026-05-07,Bob Smith,47,99.0°F,122/88,75,test,Paracetamol - Twice daily for 5 days
+2026-05-07,Bob Smith,47,98.6°F,120/80,72,test,Pantoprazole - Twice daily for 3 days
+2026-05-07,Bob Smith,47,98.6°F,120/80,72,test,Paracetamol - Twice daily for 5 days
+2026-05-07,Vishal,0,98.6°F,120/80,72,test,Atenolol - After meals for 5 days
+2026-05-07,Carol Williams,33,98.6°F,118/78,68,Healthy - no issues found,Multivitamin - Once daily for 30 days
+2026-05-07,Bob Smith,47,104.0°F,165/95,115,Hypertension with fever,Aspirin - Once daily for 30 days
+2026-05-07,Alice Johnson,41,101.5°F,130/85,92,Viral fever with URI symptoms,Paracetamol - Twice daily for 5 days; Cough Syrup - Thrice daily for 7 days
+2026-05-05,Alice Johnson,41,101.5°F,130/85,92,Viral fever with upper respiratory infection,Paracetamol - Twice daily for 5 days; Cough Syrup - Thrice daily for 7 days
+2026-05-01,Bob Smith,47,99.0°F,135/88,82,Type 2 Diabetes - controlled,Metformin - Twice daily for 30 days
+2026-04-15,Alice Johnson,41,98.6°F,120/80,75,"Healthy, no issues found",None
+2026-03-10,Alice Johnson,41,99.2°F,125/82,78,Common cold with mild cough,Cetirizine - Once daily for 5 days
+2026-02-20,Alice Johnson,41,98.4°F,118/78,72,"Recovered well, no issues",None
+2026-01-12,Alice Johnson,41,100.8°F,128/84,88,"Gastritis, advised dietary changes",Omeprazole - Once daily for 14 days; Antacid - After meals for 7 days

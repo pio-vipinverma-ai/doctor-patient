@@ -72,6 +72,23 @@ a {
 
   &:hover {
     color: $primary-dark;
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    border-radius: $border-radius-sm;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
   }
 }
 
@@ -81,6 +98,21 @@ button, [type="button"], [type="submit"], [type="reset"] {
   font-family: $font-family;
   font-size: $font-size-base;
   transition: all $transition-fast;
+
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+  }
 
   &:disabled {
     opacity: 0.5;
@@ -94,18 +126,82 @@ input, textarea, select {
   border: $border-width-thin solid $border-color;
   border-radius: $border-radius-md;
   padding: $spacing-8 $spacing-12;
-  transition: border-color $transition-fast;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
 
   &:focus {
     outline: none;
     border-color: $primary-color;
-    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+  }
+
+  &:focus-visible {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
   }
 
   &:disabled {
     background-color: $neutral-100;
     color: $text-secondary;
     cursor: not-allowed;
+  }
+}
+
+/* Accessibility: Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: $primary-color;
+  color: white;
+  padding: $spacing-8 $spacing-16;
+  text-decoration: none;
+  z-index: $z-index-tooltip + 1;
+  border-radius: 0 0 $border-radius-md 0;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+/* Accessibility: Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Accessibility: Focus Visible Indicators */
+*:focus-visible {
+  outline: 2px solid $primary-color;
+  outline-offset: 2px;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

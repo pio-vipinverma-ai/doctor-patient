@@ -12,6 +12,9 @@ const router = Router();
 // Search patients (must come before /:id to avoid conflicts)
 router.get('/search', authenticate, patientController.searchPatientsController);
 
+// Get patient consultation history (must come before /:id to avoid conflicts)
+router.get('/:id/consultations', authenticate, consultationController.getPatientConsultationsController);
+
 // Get all patients with pagination
 router.get('/', authenticate, patientController.getAllPatientsController);
 
@@ -23,8 +26,5 @@ router.post('/', authenticate, patientController.createPatientController);
 
 // Update patient
 router.put('/:id', authenticate, patientController.updatePatientController);
-
-// Get patient consultation history
-router.get('/:id/consultations', authenticate, consultationController.getPatientConsultationsController);
 
 export default router;

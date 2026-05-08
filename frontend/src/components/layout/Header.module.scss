@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
 
 .header {
   position: fixed;
@@ -8,11 +9,7 @@
   z-index: $z-index-fixed;
   background-color: $primary-color;
   color: white;
-  padding: 0;
   box-shadow: $shadow-md;
-  position: sticky;
-  top: 0;
-  z-index: $z-index-sticky;
   height: $header-height;
   display: flex;
   align-items: center;
@@ -25,6 +22,16 @@
     justify-content: space-between;
     align-items: center;
     margin: 0;
+    
+    @include mobile {
+      padding: 0 $spacing-12;
+    }
+  }
+
+  .leftSection {
+    display: flex;
+    align-items: center;
+    gap: $spacing-12;
   }
 
   .logo {
@@ -36,6 +43,14 @@
       margin: 0;
       font-weight: $font-weight-semibold;
       white-space: nowrap;
+      
+      @include mobile {
+        font-size: $font-size-base;
+      }
+      
+      @include tablet {
+        font-size: $font-size-lg;
+      }
     }
   }
 
@@ -43,28 +58,51 @@
     display: flex;
     align-items: center;
     gap: $spacing-16;
+    
+    @include mobile {
+      gap: $spacing-8;
+    }
   }
 
   .userMenu {
     display: flex;
     align-items: center;
     gap: $spacing-12;
+    
+    @include mobile {
+      gap: $spacing-8;
+    }
   }
 
   .userName {
     font-size: $font-size-sm;
     color: rgba(white, 0.9);
+    
+    @include mobile {
+      display: none;
+    }
+    
+    @include tablet {
+      font-size: $font-size-xs;
+    }
   }
 
   .logoutBtn {
     background-color: transparent;
     border: $border-width-thin solid rgba(white, 0.3);
     color: white;
-    padding: $spacing-8 $spacing-12;
+    padding: $spacing-8 $spacing-16;
     border-radius: $border-radius-md;
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
+    cursor: pointer;
     transition: all $transition-fast;
+    
+    @include mobile {
+      @include touch-target;
+      padding: $spacing-8 $spacing-12;
+      font-size: $font-size-xs;
+    }
 
     &:hover {
       background-color: rgba(white, 0.1);
@@ -74,25 +112,15 @@
     &:active {
       background-color: rgba(white, 0.2);
     }
+    
+    &:focus {
+      outline: 2px solid white;
+      outline-offset: 2px;
+    }
   }
 
   .guestText {
     font-size: $font-size-sm;
     color: rgba(white, 0.7);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .header {
-    .container {
-      padding: 0 $spacing-16;
-    }
-
-    .logo {
-      h1 {
-        font-size: $font-size-lg;
-      }
-    }
   }
 }

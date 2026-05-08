@@ -41,12 +41,12 @@ export const LoginPage: React.FC = () => {
     <div className={styles.loginPage}>
       <div className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <div className={styles.header}>
+          <header className={styles.header}>
             <h1>Patient Management System</h1>
             <p>Doctor Login</p>
-          </div>
+          </header>
 
-          <form onSubmit={handleSubmit} className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form} aria-label="Login form">
             <div className={styles.formGroup}>
               <label htmlFor="username" className={styles.label}>
                 Username
@@ -60,6 +60,10 @@ export const LoginPage: React.FC = () => {
                 className={styles.input}
                 disabled={isLoading}
                 autoFocus
+                required
+                aria-required="true"
+                aria-invalid={error ? 'true' : 'false'}
+                aria-describedby={error ? 'login-error' : undefined}
               />
             </div>
 
@@ -75,23 +79,37 @@ export const LoginPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className={styles.input}
                 disabled={isLoading}
+                required
+                aria-required="true"
+                aria-invalid={error ? 'true' : 'false'}
+                aria-describedby={error ? 'login-error' : undefined}
               />
             </div>
 
-            {error && <div className={styles.error}>{error}</div>}
+            {error && (
+              <div 
+                id="login-error"
+                className={styles.error} 
+                role="alert" 
+                aria-live="assertive"
+              >
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"
               className={styles.submitBtn}
               disabled={isLoading}
+              aria-busy={isLoading}
             >
               {isLoading ? 'Logging in...' : 'Login'}
             </button>
           </form>
 
-          <div className={styles.footer}>
+          <footer className={styles.footer}>
             <p className={styles.hint}>Test credentials: doctor / password123</p>
-          </div>
+          </footer>
         </div>
       </div>
     </div>

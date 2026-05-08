@@ -1,0 +1,8 @@
+{
+  "name": "John Doe Cypress",
+  "dob": "1985-05-20",
+  "gender": "M",
+  "phone": "9876543210",
+  "email": "john.cypress@example.com",
+  "address": "456 Cypress Avenue, Test City"
+}

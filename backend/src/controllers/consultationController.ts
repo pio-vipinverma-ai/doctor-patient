@@ -159,8 +159,33 @@ export const getPatientConsultationsController = async (
     const patientId = req.params.id;
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const fromDate = req.query.from as string;
+    const toDate = req.query.to as string;
 
-    const result = await consultationService.getConsultationHistory(patientId, limit, offset);
+    // Validate date formats if provided
+    if (fromDate && isNaN(Date.parse(fromDate))) {
+      res.status(400).json({
+        success: false,
+        error: 'Invalid from date format. Use ISO date format (YYYY-MM-DD)',
+      });
+      return;
+    }
+
+    if (toDate && isNaN(Date.parse(toDate))) {
+      res.status(400).json({
+        success: false,
+        error: 'Invalid to date format. Use ISO date format (YYYY-MM-DD)',
+      });
+      return;
+    }
+
+    const result = await consultationService.getConsultationHistory(
+      patientId,
+      limit,
+      offset,
+      fromDate,
+      toDate
+    );
 
     const pages = Math.ceil(result.total / limit);
 
@@ -180,6 +205,10 @@ export const getPatientConsultationsController = async (
       pages,
       currentPage: Math.floor(offset / limit) + 1,
       limit,
+      filters: {
+        from: fromDate || null,
+        to: toDate || null,
+      },
     });
   } catch (error: any) {
     console.error('[ConsultationController] Get patient consultations error:', error);

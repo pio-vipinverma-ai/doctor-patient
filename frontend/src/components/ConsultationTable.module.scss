@@ -1,0 +1,385 @@
+.container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+
+  thead {
+    background-color: #34495e;
+    color: white;
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+
+      &.expandCol {
+        width: 40px;
+        padding: 1rem 0.5rem;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #ecf0f1;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &.row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+
+        &.expanded {
+          background-color: #e8f4f8;
+        }
+      }
+
+      &.detailsRow {
+        background-color: #f8f9fa;
+        cursor: default;
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+
+        td {
+          padding: 0;
+        }
+      }
+    }
+
+    td {
+      padding: 1rem;
+      color: #2c3e50;
+
+      &.expandCol {
+        width: 40px;
+        padding: 1rem 0.5rem;
+      }
+
+      &.diagnosisCell {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &.actionsCell {
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.expandButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3498db;
+  font-size: 1.2rem;
+  padding: 0.25rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #e8f4f8;
+  }
+}
+
+.actionButton {
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: #2980b9;
+  }
+
+  &:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.loadingDetails {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+  color: #7f8c8d;
+
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #ecf0f1;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.noData {
+  padding: 3rem;
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+// Consultation Details Styles
+.detailsContent {
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.detailSection {
+  h4 {
+    margin: 0 0 1rem 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+  }
+
+  h5 {
+    margin: 0.5rem 0;
+    color: #e67e22;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+}
+
+.vitalsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vitalItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.vitalLabel {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.vitalValue {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.warnings {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #fff3cd;
+  border-left: 4px solid #e67e22;
+  border-radius: 4px;
+
+  p {
+    margin: 0.5rem 0;
+    color: #856404;
+    font-size: 0.9rem;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.detailText {
+  margin: 0;
+  color: #2c3e50;
+  line-height: 1.6;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
+
+.reuseButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #27ae60;
+  }
+}
+
+.medicationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.medicationItem {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 4px;
+  border-left: 4px solid #3498db;
+}
+
+.medicationHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.medicationNumber {
+  color: #3498db;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.medicationName {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.medicationDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.5rem;
+
+  span {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+
+    strong {
+      color: #2c3e50;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.detailsActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.printButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.85rem;
+
+    thead th,
+    tbody td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+
+  .diagnosisCell {
+    max-width: 150px;
+  }
+
+  .detailsContent {
+    padding: 1rem;
+  }
+
+  .detailsGrid {
+    gap: 1rem;
+  }
+
+  .medicationDetails {
+    padding-left: 0;
+  }
+
+  .detailsActions {
+    flex-direction: column;
+
+    .printButton {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,303 @@
+.exportPage {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+
+  .title {
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+    color: #2c3e50;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 1rem;
+  }
+}
+
+.exportContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ecf0f1;
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .sectionTitle {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.radioOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid #ecf0f1;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #3498db;
+    background-color: #f8f9fa;
+  }
+
+  input[type="radio"] {
+    margin-top: 0.25rem;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  input[type="radio"]:checked + .radioContent {
+    .radioLabel {
+      color: #2563eb;
+      font-weight: 600;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.radioContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radioLabel {
+  font-size: 1rem;
+  color: #2c3e50;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.radioDescription {
+  font-size: 0.875rem;
+  color: #7f8c8d;
+  line-height: 1.5;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background-color: #fbbf24;
+  color: #78350f;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.dateHint {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.exportActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.exportButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 180px;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.downloadIcon {
+  font-size: 1.25rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.exportHint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #7f8c8d;
+}
+
+.infoSection,
+.helpSection {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #2563eb;
+}
+
+.infoTitle,
+.helpTitle {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.infoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.infoItem {
+  font-size: 0.875rem;
+  color: #2c3e50;
+
+  strong {
+    color: #1e293b;
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+}
+
+.helpList {
+  margin: 0;
+  padding-left: 1.5rem;
+  
+  li {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: #2c3e50;
+    line-height: 1.6;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .exportPage {
+    padding: 1rem;
+  }
+
+  .header {
+    .title {
+      font-size: 1.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+    }
+  }
+
+  .exportContainer {
+    padding: 1.5rem;
+  }
+
+  .section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+
+    .sectionTitle {
+      font-size: 1.1rem;
+    }
+  }
+
+  .radioOption {
+    padding: 0.875rem;
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .radioLabel {
+    font-size: 0.9375rem;
+  }
+
+  .radioDescription {
+    font-size: 0.8125rem;
+  }
+
+  .exportButton {
+    width: 100%;
+    padding: 1rem 1.5rem;
+  }
+
+  .infoSection,
+  .helpSection {
+    padding: 1rem;
+  }
+}

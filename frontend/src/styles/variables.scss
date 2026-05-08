@@ -37,6 +37,7 @@ $spacing-4: 4px;
 $spacing-8: 8px;
 $spacing-12: 12px;
 $spacing-16: 16px;
+$spacing-20: 20px;
 $spacing-24: 24px;
 $spacing-32: 32px;
 $spacing-48: 48px;
@@ -93,3 +94,24 @@ $z-index-modal-backdrop: 1040;
 $z-index-modal: 1050;
 $z-index-popover: 1060;
 $z-index-tooltip: 1070;
+
+// Responsive Breakpoints
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1024px;
+
+// Touch Targets (Accessibility)
+$touch-target-min: 48px;
+$touch-target-mobile: 48px;
+$touch-target-tablet: 44px;
+$touch-target-desktop: 40px;
+
+// Button Heights
+$button-height-mobile: 48px;
+$button-height-tablet: 44px;
+$button-height-desktop: 40px;
+
+// Input Heights
+$input-height-mobile: 48px;
+$input-height-tablet: 44px;
+$input-height-desktop: 40px;

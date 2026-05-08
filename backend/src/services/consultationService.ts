@@ -314,19 +314,39 @@ export const createConsultation = async (
 
 /**
  * Get consultation history for a patient
+ * With date range filtering and pagination
  */
 export const getConsultationHistory = async (
   patientId: string,
   limit: number = 10,
-  offset: number = 0
+  offset: number = 0,
+  fromDate?: string,
+  toDate?: string
 ): Promise<{ consultations: ConsultationHistoryItem[]; total: number }> => {
+  // Build WHERE clause with date filtering
+  let whereClause = 'WHERE c.patient_id = $1';
+  const queryParams: any[] = [patientId];
+  let paramCount = 2;
+
+  if (fromDate) {
+    whereClause += ` AND c.created_at >= $${paramCount}`;
+    queryParams.push(fromDate);
+    paramCount++;
+  }
+
+  if (toDate) {
+    whereClause += ` AND c.created_at <= $${paramCount}`;
+    queryParams.push(toDate);
+    paramCount++;
+  }
+
   // Get total count
   const countQuery = `
     SELECT COUNT(*) as count
-    FROM consultations
-    WHERE patient_id = $1
+    FROM consultations c
+    ${whereClause}
   `;
-  const countResult = await pool.query(countQuery, [patientId]);
+  const countResult = await pool.query(countQuery, queryParams);
   const total = parseInt(countResult.rows[0].count);
 
   // Get consultation history
@@ -339,18 +359,25 @@ export const getConsultationHistory = async (
       c.bp_diastolic,
       c.pulse,
       c.diagnosis,
-      COUNT(m.id) as medication_count,
-      p.id as prescription_id
+      (
+        SELECT COUNT(*) 
+        FROM medications m 
+        WHERE m.consultation_id = c.id
+      ) as medication_count,
+      (
+        SELECT p.id 
+        FROM prescriptions p 
+        WHERE p.consultation_id = c.id
+        LIMIT 1
+      ) as prescription_id
     FROM consultations c
-    LEFT JOIN medications m ON c.id = m.consultation_id
-    LEFT JOIN prescriptions p ON c.id = p.consultation_id
-    WHERE c.patient_id = $1
-    GROUP BY c.id, p.id
+    ${whereClause}
     ORDER BY c.created_at DESC
-    LIMIT $2 OFFSET $3
+    LIMIT $${paramCount} OFFSET $${paramCount + 1}
   `;
 
-  const result = await pool.query(query, [patientId, limit, offset]);
+  queryParams.push(limit, offset);
+  const result = await pool.query(query, queryParams);
 
   const consultations: ConsultationHistoryItem[] = result.rows.map((row) => ({
     id: row.id,

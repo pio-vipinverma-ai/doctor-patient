@@ -4,7 +4,39 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Patient Management System - Healthcare Portal for Doctors" />
+    <meta name="theme-color" content="#0066cc" />
+    
+    <!-- DNS Prefetch for API server -->
+    <link rel="dns-prefetch" href="http://localhost:5000" />
+    <link rel="preconnect" href="http://localhost:5000" />
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" as="style" href="/src/styles/index.scss" />
+    
+    <!-- Preload critical fonts (if any) -->
+    <!-- <link rel="preload" as="font" href="/fonts/font.woff2" type="font/woff2" crossorigin /> -->
+    
     <title>Patient Management System</title>
+    
+    <!-- Inline critical CSS for spinner animation -->
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      #root:empty::after {
+        content: '';
+        display: block;
+        width: 48px;
+        height: 48px;
+        margin: 100px auto;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0066cc;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

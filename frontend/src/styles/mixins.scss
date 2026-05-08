@@ -1,0 +1,112 @@
+// Responsive Mixins
+@import './variables.scss';
+
+// Mobile First Approach
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $breakpoint-mobile) and (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+// Touch Target Mixin
+@mixin touch-target {
+  min-height: $touch-target-min;
+  min-width: $touch-target-min;
+  padding: $spacing-12 $spacing-16;
+  
+  @include mobile {
+    min-height: $touch-target-mobile;
+    padding: $spacing-12 $spacing-16;
+  }
+  
+  @include tablet {
+    min-height: $touch-target-tablet;
+  }
+  
+  @include desktop {
+    min-height: $touch-target-desktop;
+  }
+}
+
+// Button Responsive Heights
+@mixin button-responsive {
+  height: $button-height-desktop;
+  
+  @include mobile {
+    height: $button-height-mobile;
+  }
+  
+  @include tablet {
+    height: $button-height-tablet;
+  }
+}
+
+// Input Responsive Heights
+@mixin input-responsive {
+  height: $input-height-desktop;
+  
+  @include mobile {
+    height: $input-height-mobile;
+  }
+  
+  @include tablet {
+    height: $input-height-tablet;
+  }
+}
+
+// Container Padding
+@mixin container-padding {
+  padding: $spacing-24;
+  
+  @include mobile {
+    padding: $spacing-16;
+  }
+  
+  @include tablet {
+    padding: $spacing-20;
+  }
+}
+
+// Hide on Mobile
+@mixin hide-mobile {
+  @include mobile {
+    display: none !important;
+  }
+}
+
+// Hide on Desktop
+@mixin hide-desktop {
+  @include desktop {
+    display: none !important;
+  }
+}
+
+// Scrollable Table
+@mixin scrollable-table {
+  @include mobile {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    table {
+      min-width: 600px;
+    }
+  }
+}
