@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { authenticate } from '../auth';
-import { verifyAccessToken } from '../../utils/jwt';
+import { verifyAccessToken, extractTokenFromHeader } from '../../utils/jwt';
 
 jest.mock('../../utils/jwt');
 
 const mockVerifyAccessToken = verifyAccessToken as jest.MockedFunction<typeof verifyAccessToken>;
+const mockExtractTokenFromHeader = extractTokenFromHeader as jest.MockedFunction<typeof extractTokenFromHeader>;
 
 describe('Auth Middleware', () => {
   let mockReq: Partial<Request>;
@@ -27,10 +28,12 @@ describe('Auth Middleware', () => {
     it('should authenticate with valid token', () => {
       const mockPayload = { userId: 'u1', username: 'doctor', email: 'doctor@example.com' };
       mockReq.headers = { authorization: 'Bearer valid-token' };
+      mockExtractTokenFromHeader.mockReturnValueOnce('valid-token');
       mockVerifyAccessToken.mockReturnValueOnce(mockPayload);
 
       authenticate(mockReq as Request, mockRes as Response, mockNext);
 
+      expect(mockExtractTokenFromHeader).toHaveBeenCalledWith('Bearer valid-token');
       expect(mockVerifyAccessToken).toHaveBeenCalledWith('valid-token');
       expect(mockReq.user).toEqual(mockPayload);
       expect(mockNext).toHaveBeenCalled();
@@ -38,32 +41,37 @@ describe('Auth Middleware', () => {
 
     it('should reject missing authorization header', () => {
       mockReq.headers = {};
+      mockExtractTokenFromHeader.mockReturnValueOnce(null);
 
       authenticate(mockReq as Request, mockRes as Response, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(401);
       expect(mockRes.json).toHaveBeenCalledWith({
         success: false,
-        error: 'Access token is required'
+        error: 'Authentication required',
+        message: 'No token provided'
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
 
     it('should reject invalid token format', () => {
       mockReq.headers = { authorization: 'InvalidFormat' };
+      mockExtractTokenFromHeader.mockReturnValueOnce(null);
 
       authenticate(mockReq as Request, mockRes as Response, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(401);
       expect(mockRes.json).toHaveBeenCalledWith({
         success: false,
-        error: 'Invalid token format'
+        error: 'Authentication required',
+        message: 'No token provided'
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
 
     it('should reject invalid token', () => {
       mockReq.headers = { authorization: 'Bearer invalid-token' };
+      mockExtractTokenFromHeader.mockReturnValueOnce('invalid-token');
       mockVerifyAccessToken.mockReturnValueOnce(null);
 
       authenticate(mockReq as Request, mockRes as Response, mockNext);
@@ -71,13 +79,15 @@ describe('Auth Middleware', () => {
       expect(mockRes.status).toHaveBeenCalledWith(401);
       expect(mockRes.json).toHaveBeenCalledWith({
         success: false,
-        error: 'Invalid or expired token'
+        error: 'Invalid or expired token',
+        message: 'Please login again'
       });
       expect(mockNext).not.toHaveBeenCalled();
     });
 
     it('should handle token verification errors', () => {
       mockReq.headers = { authorization: 'Bearer error-token' };
+      mockExtractTokenFromHeader.mockReturnValueOnce('error-token');
       mockVerifyAccessToken.mockImplementationOnce(() => {
         throw new Error('Verification error');
       });
@@ -87,7 +97,8 @@ describe('Auth Middleware', () => {
       expect(mockRes.status).toHaveBeenCalledWith(401);
       expect(mockRes.json).toHaveBeenCalledWith({
         success: false,
-        error: 'Invalid or expired token'
+        error: 'Authentication failed',
+        message: 'Invalid token'
       });
       expect(mockNext).not.toHaveBeenCalled();
     });

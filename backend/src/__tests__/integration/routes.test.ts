@@ -443,7 +443,7 @@ describe('Integration Tests - API Routes', () => {
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
       expect(response.body.consultation).toHaveProperty('id');
-      expect(response.body.medications).toHaveLength(1);
+      expect(response.body.consultation.medications).toHaveLength(1);
     });
 
     it('should validate vital signs', async () => {

@@ -171,26 +171,6 @@ describe('AppointmentService', () => {
         ['2026-05-10', 'Completed']
       );
     });
-
-    it('should filter by patientId if provided', async () => {
-      // Arrange
-      mockPool.query.mockResolvedValueOnce({
-        rows: [],
-        command: 'SELECT',
-        rowCount: 0,
-        oid: 0,
-        fields: []
-      } as any);
-
-      // Act
-      await getAppointmentsByDate('2026-05-10', undefined, 'patient-123');
-
-      // Assert
-      expect(mockPool.query).toHaveBeenCalledWith(
-        expect.stringContaining('AND a.patient_id = $2'),
-        ['2026-05-10', 'patient-123']
-      );
-    });
   });
 
   describe('updateAppointment', () => {

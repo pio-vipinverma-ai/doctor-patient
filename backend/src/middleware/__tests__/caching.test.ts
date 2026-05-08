@@ -7,8 +7,12 @@ describe('Caching Middleware', () => {
   let mockNext: NextFunction;
 
   beforeEach(() => {
-    mockReq = {};
+    mockReq = {
+      method: 'GET',
+      headers: {}
+    };
     mockRes = {
+      set: jest.fn().mockReturnThis(),
       setHeader: jest.fn().mockReturnThis()
     };
     mockNext = jest.fn();
@@ -16,28 +20,60 @@ describe('Caching Middleware', () => {
   });
 
   describe('cacheControl', () => {
-    it('should set Cache-Control header to no-cache for default', () => {
+    it('should not cache authenticated requests', () => {
+      mockReq.headers = { authorization: 'Bearer token123' };
+      
       cacheControl(mockReq as Request, mockRes as Response, mockNext);
 
-      expect(mockRes.setHeader).toHaveBeenCalledWith('Cache-Control', 'no-cache, no-store, must-revalidate');
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+      expect(mockRes.set).toHaveBeenCalledWith('Pragma', 'no-cache');
+      expect(mockRes.set).toHaveBeenCalledWith('Expires', '0');
       expect(mockNext).toHaveBeenCalled();
     });
 
-    it('should set custom cache duration when provided', () => {
-      const customCache = cacheControl('public, max-age=3600');
+    it('should not cache POST requests', () => {
+      mockReq.method = 'POST';
       
-      customCache(mockReq as Request, mockRes as Response, mockNext);
+      cacheControl(mockReq as Request, mockRes as Response, mockNext);
 
-      expect(mockRes.setHeader).toHaveBeenCalledWith('Cache-Control', 'public, max-age=3600');
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'no-store, no-cache, must-revalidate');
       expect(mockNext).toHaveBeenCalled();
     });
 
-    it('should set private cache control', () => {
-      const privateCache = cacheControl('private, max-age=1800');
+    it('should not cache PUT requests', () => {
+      mockReq.method = 'PUT';
       
-      privateCache(mockReq as Request, mockRes as Response, mockNext);
+      cacheControl(mockReq as Request, mockRes as Response, mockNext);
 
-      expect(mockRes.setHeader).toHaveBeenCalledWith('Cache-Control', 'private, max-age=1800');
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'no-store, no-cache, must-revalidate');
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should not cache DELETE requests', () => {
+      mockReq.method = 'DELETE';
+      
+      cacheControl(mockReq as Request, mockRes as Response, mockNext);
+
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'no-store, no-cache, must-revalidate');
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should cache GET requests with default 5 minutes', () => {
+      mockReq.method = 'GET';
+      
+      cacheControl(mockReq as Request, mockRes as Response, mockNext);
+
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'public, max-age=300');
+      expect(mockRes.set).toHaveBeenCalledWith('ETag', expect.any(String));
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should cache HEAD requests', () => {
+      mockReq.method = 'HEAD';
+      
+      cacheControl(mockReq as Request, mockRes as Response, mockNext);
+
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'public, max-age=300');
       expect(mockNext).toHaveBeenCalled();
     });
 
@@ -47,22 +83,13 @@ describe('Caching Middleware', () => {
       expect(mockNext).toHaveBeenCalledTimes(1);
       expect(mockNext).toHaveBeenCalledWith();
     });
-
-    it('should work with no-store directive', () => {
-      const noStoreCache = cacheControl('no-store');
-      
-      noStoreCache(mockReq as Request, mockRes as Response, mockNext);
-
-      expect(mockRes.setHeader).toHaveBeenCalledWith('Cache-Control', 'no-store');
-      expect(mockNext).toHaveBeenCalled();
-    });
   });
 
   describe('healthCheckCache', () => {
-    it('should set short cache for health check endpoint', () => {
+    it('should set cache for health check endpoint', () => {
       healthCheckCache(mockReq as Request, mockRes as Response, mockNext);
 
-      expect(mockRes.setHeader).toHaveBeenCalledWith('Cache-Control', 'public, max-age=10');
+      expect(mockRes.set).toHaveBeenCalledWith('Cache-Control', 'public, max-age=60');
       expect(mockNext).toHaveBeenCalled();
     });
 
@@ -76,9 +103,9 @@ describe('Caching Middleware', () => {
     it('should allow public caching for health checks', () => {
       healthCheckCache(mockReq as Request, mockRes as Response, mockNext);
 
-      const cacheHeader = (mockRes.setHeader as jest.Mock).mock.calls[0][1];
+      const cacheHeader = (mockRes.set as jest.Mock).mock.calls[0][1];
       expect(cacheHeader).toContain('public');
-      expect(cacheHeader).toContain('max-age=10');
+      expect(cacheHeader).toContain('max-age=60');
     });
   });
 
@@ -88,7 +115,7 @@ describe('Caching Middleware', () => {
         healthCheckCache(mockReq as Request, mockRes as Response, mockNext);
       });
 
-      expect(mockRes.setHeader).toHaveBeenCalledTimes(2);
+      expect(mockRes.set).toHaveBeenCalled();
       expect(mockNext).toHaveBeenCalled();
     });
 

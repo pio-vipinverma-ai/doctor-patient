@@ -19,8 +19,10 @@ describe('Error Handler Middleware', () => {
   beforeEach(() => {
     mockReq = {
       method: 'GET',
-      originalUrl: '/api/test'
+      originalUrl: '/api/test',
+      path: '/api/test'
     };
+    (mockReq as any).requestId = 'test-request-id';
     mockRes = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn().mockReturnThis()
@@ -36,11 +38,15 @@ describe('Error Handler Middleware', () => {
       errorHandler(error, mockReq as Request, mockRes as Response, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(500);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        success: false,
-        error: 'Test error',
-        stack: expect.any(String)
-      });
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: false,
+          error: 'Test error',
+          statusCode: 500,
+          timestamp: expect.any(String),
+          requestId: 'test-request-id'
+        })
+      );
     });
 
     it('should handle errors without stack in production', () => {
@@ -52,10 +58,14 @@ describe('Error Handler Middleware', () => {
       errorHandler(error, mockReq as Request, mockRes as Response, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(500);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        success: false,
-        error: 'Production error'
-      });
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: false,
+          error: 'Internal Server Error',
+          statusCode: 500,
+          timestamp: expect.any(String)
+        })
+      );
 
       process.env.NODE_ENV = originalEnv;
     });
@@ -67,11 +77,14 @@ describe('Error Handler Middleware', () => {
       errorHandler(error, mockReq as Request, mockRes as Response, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        success: false,
-        error: 'Bad request',
-        stack: expect.any(String)
-      });
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: false,
+          error: 'Bad request',
+          statusCode: 400,
+          timestamp: expect.any(String)
+        })
+      );
     });
   });
 
@@ -80,23 +93,36 @@ describe('Error Handler Middleware', () => {
       notFoundHandler(mockReq as Request, mockRes as Response);
 
       expect(mockRes.status).toHaveBeenCalledWith(404);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        success: false,
-        error: 'Route not found: GET /api/test'
-      });
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: false,
+          error: 'Route /api/test not found',
+          statusCode: 404,
+          timestamp: expect.any(String)
+        })
+      );
     });
 
     it('should include correct method and url', () => {
       mockReq.method = 'POST';
       mockReq.originalUrl = '/api/nonexistent';
+      Object.defineProperty(mockReq, 'path', {
+        value: '/api/nonexistent',
+        writable: true,
+        configurable: true
+      });
 
       notFoundHandler(mockReq as Request, mockRes as Response);
 
       expect(mockRes.status).toHaveBeenCalledWith(404);
-      expect(mockRes.json).toHaveBeenCalledWith({
-        success: false,
-        error: 'Route not found: POST /api/nonexistent'
-      });
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: false,
+          error: 'Route /api/nonexistent not found',
+          statusCode: 404,
+          timestamp: expect.any(String)
+        })
+      );
     });
   });
 });

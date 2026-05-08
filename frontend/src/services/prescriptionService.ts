@@ -63,34 +63,46 @@ export interface PrescriptionResponse {
  * Get prescription by ID
  */
 export const getPrescriptionById = async (prescriptionId: string): Promise<PrescriptionData> => {
-  const response = await axios.get<PrescriptionResponse>(
-    `${API_URL}/api/prescriptions/${prescriptionId}`,
-    { headers: getAuthHeaders() }
-  );
-  return response.data.prescription;
+  try {
+    const response = await axios.get<PrescriptionResponse>(
+      `${API_URL}/api/prescriptions/${prescriptionId}`,
+      { headers: getAuthHeaders() }
+    );
+    return response.data.prescription;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to fetch prescription');
+  }
 };
 
 /**
  * Get prescription HTML for printing
  */
 export const getPrescriptionHTML = async (prescriptionId: string): Promise<string> => {
-  const response = await axios.get<string>(
-    `${API_URL}/api/prescriptions/${prescriptionId}/print?format=html`,
-    { 
-      headers: getAuthHeaders(),
-      responseType: 'text' as any 
-    }
-  );
-  return response.data;
+  try {
+    const response = await axios.get<string>(
+      `${API_URL}/api/prescriptions/${prescriptionId}/print?format=html`,
+      { 
+        headers: getAuthHeaders(),
+        responseType: 'text' as any 
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to print prescription');
+  }
 };
 
 /**
  * Mark prescription as printed
  */
 export const markAsPrinted = async (prescriptionId: string): Promise<void> => {
-  await axios.put(
-    `${API_URL}/api/prescriptions/${prescriptionId}/mark-printed`,
-    {},
-    { headers: getAuthHeaders() }
-  );
+  try {
+    await axios.put(
+      `${API_URL}/api/prescriptions/${prescriptionId}/mark-printed`,
+      {},
+      { headers: getAuthHeaders() }
+    );
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || 'Failed to mark prescription as printed');
+  }
 };

@@ -6,7 +6,10 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/__mocks__/fileMock.js',
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^../config/config$': '<rootDir>/src/config/__mocks__/config.ts',
+    '^../../config/config$': '<rootDir>/src/config/__mocks__/config.ts',
+    '^html2pdf\\.js$': '<rootDir>/src/__mocks__/html2pdf.js',
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   collectCoverageFrom: [
@@ -27,24 +30,17 @@ module.exports = {
   coverageDirectory: 'coverage',
   verbose: true,
   testTimeout: 10000,
-  globals: {
-    'import.meta': {
-      env: {
-        VITE_API_URL: 'http://localhost:5000',
-        MODE: 'test',
-        DEV: false,
-        PROD: false,
-        SSR: false,
-      },
-    },
-  },
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {
       tsconfig: {
         jsx: 'react-jsx',
         esModuleInterop: true,
         allowSyntheticDefaultImports: true
-      }
+      },
+      isolatedModules: true
     }]
-  }
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(axios)/)'
+  ]
 };
