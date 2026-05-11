@@ -339,8 +339,9 @@ describe('AppointmentController', () => {
 
       await getAppointmentsController(mockReq as Request, mockRes as Response);
 
+      const today = new Date().toISOString().split('T')[0];
       expect(mockAppointmentService.getAppointmentsByDate).toHaveBeenCalledWith(
-        expect.stringContaining('2026-05-08'),
+        today,
         undefined
       );
       expect(mockRes.status).toHaveBeenCalledWith(200);

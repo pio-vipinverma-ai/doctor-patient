@@ -1,0 +1,410 @@
+﻿
+> doc-patient-frontend@1.0.0 test
+> jest --verbose --watchAll=false --passWithNoTests src/components/__tests__/AppointmentList.test.tsx
+
+node.exe : ts-jest[config] (WARN) 
+At line:1 char:1
++ & "C:\nvm4w\nodejs/node.exe" "C:\nvm4w\nodejs/node_modules/npm/bin/np ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ts-jest[config] (WARN) :String) [ 
+   ], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    The "ts-jest" config option "isolatedModules" is deprecated and will be 
+removed in v30.0.0. Please use "isolatedModules: true" in 
+D:/vipin/projects/doc-patient/frontend/tsconfig.json instead, see 
+https://www.typescriptlang.org/tsconfig/#isolatedModules
+  
+FAIL src/components/__tests__/AppointmentList.test.tsx
+  ΓùÅ Test suite failed to run
+
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m157[0m:[9
+3m23[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+    [7m157[0m       </BrowserRouter>queryAllByText(/cancel/i);
+    [7m   [0m [91m                      ~~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m157[0m:[9
+3m48[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+    [7m157[0m       </BrowserRouter>queryAllByText(/cancel/i);
+    [7m   [0m [91m                                               ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m166[0m:[9
+3m41[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+    [7m166[0m       expect(screen.getByText('John Doe'yText(/cancel/i);
+    [7m   [0m [91m                                        ~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m166[0m:[9
+3m57[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+    [7m166[0m       expect(screen.getByText('John Doe'yText(/cancel/i);
+    [7m   [0m [91m                                                        
+~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m171[0m:[9
+3m4[0m - [91merror[0m[90m TS1128: [0mDeclaration or statement expected.
+
+    [7m171[0m   });
+    [7m   [0m [91m   ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m177[0m:[9
+3m8[0m - [91merror[0m[90m TS17008: [0mJSX element 'BrowserRouter' has no 
+corresponding closing tag.
+
+    [7m177[0m       <BrowserRouter>
+    [7m   [0m [91m       ~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m178[0m:[9
+3m10[0m - [91merror[0m[90m TS17008: [0mJSX element 'ToastProvider' has no 
+corresponding closing tag.
+
+    [7m178[0m         <ToastProvider>queryAllByText(/cancel/i);
+    [7m   [0m [91m         ~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m179[0m:[9
+3m30[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m179[0m     if (cancelButtons.length > 0) {
+    [7m   [0m [91m                             ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m180[0m:[9
+3m40[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m180[0m       fireEvent.click(cancelButtons[0]);
+    [7m   [0m [91m                                       ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m184[0m:[9
+3m39[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m184[0m         fireEvent.click(confirmButton);
+    [7m   [0m [91m                                      ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m186[0m:[9
+3m27[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m186[0m         await waitFor(() => {
+    [7m   [0m [91m                          ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m189[0m:[9
+3m13[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m189[0m           });
+    [7m   [0m [91m            ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m190[0m:[9
+3m9[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m190[0m         });
+    [7m   [0m [91m        ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m191[0m:[9
+3m7[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m191[0m       }
+    [7m   [0m [91m      ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m192[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m192[0m     } else {
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m194[0m:[9
+3m91[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+    [7m194[0m       expect(screen.getByText('John 
+Doe')).toBeInTheDocument(ireEvent.click(confirmButton);
+    [7m   [0m [91m                                                          
+                                ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m196[0m:[9
+3m25[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m196[0m       await waitFor(() => {
+    [7m   [0m [91m                        ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m199[0m:[9
+3m11[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m199[0m         });
+    [7m   [0m [91m          ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m200[0m:[9
+3m7[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m200[0m       });
+    [7m   [0m [91m      ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m201[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m201[0m     }
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m202[0m:[9
+3m3[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m202[0m   });
+    [7m   [0m [91m  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m204[0m:[9
+3m61[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m204[0m   it('should display empty state when no appointments', () => {
+    [7m   [0m [91m                                                          
+  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m210[0m:[9
+3m47[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m210[0m       expect(emptyElement).toBeInTheDocument();
+    [7m   [0m [91m                                              ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m211[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m211[0m     } else {
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m213[0m:[9
+3m30[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m213[0m       expect(true).toBe(true);
+    [7m   [0m [91m                             ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m214[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m214[0m     }/>
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m214[0m:[9
+3m7[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m214[0m     }/>
+    [7m   [0m [91m      ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m217[0m:[9
+3m6[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m217[0m     );
+    [7m   [0m [91m     ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m220[0m:[9
+3m3[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m220[0m   });
+    [7m   [0m [91m  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m222[0m:[9
+3m55[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m222[0m   it('should apply correct status badge classes', () => {
+    [7m   [0m [91m                                                      
+~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m229[0m:[9
+3m6[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m229[0m     );
+    [7m   [0m [91m     ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m236[0m:[9
+3m3[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m236[0m   });
+    [7m   [0m [91m  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m238[0m:[9
+3m46[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m238[0m   it('should handle update error', async () => {
+    [7m   [0m [91m                                             ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m241[0m:[9
+3m6[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m241[0m     );
+    [7m   [0m [91m     ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m244[0m:[9
+3m8[0m - [91merror[0m[90m TS17008: [0mJSX element 'BrowserRouter' has no 
+corresponding closing tag.
+
+    [7m244[0m       <BrowserRouter>
+    [7m   [0m [91m       ~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m245[0m:[9
+3m10[0m - [91merror[0m[90m TS17008: [0mJSX element 'ToastProvider' has no 
+corresponding closing tag.
+
+    [7m245[0m         <ToastProvider>queryAllByText(/mark as completed/i);
+    [7m   [0m [91m         ~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m246[0m:[9
+3m32[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m246[0m     if (completeButtons.length > 0) {
+    [7m   [0m [91m                               ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m247[0m:[9
+3m42[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m247[0m       fireEvent.click(completeButtons[0]);
+    [7m   [0m [91m                                         ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m249[0m:[9
+3m25[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m249[0m       await waitFor(() => {
+    [7m   [0m [91m                        ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m250[0m:[9
+3m9[0m - [91merror[0m[90m TS1109: [0mExpression expected.
+
+    [7m250[0m         const errorElement = screen.queryByText(/failed to 
+update/i);
+    [7m   [0m [91m        ~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m252[0m:[9
+3m51[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m252[0m           expect(errorElement).toBeInTheDocument();
+    [7m   [0m [91m                                                  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m253[0m:[9
+3m9[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m253[0m         }
+    [7m   [0m [91m        ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m254[0m:[9
+3m7[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m254[0m       });
+    [7m   [0m [91m      ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m255[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m255[0m     } else {
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m257[0m:[9
+3m65[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+    [7m257[0m       expect(screen.getByText('John 
+Doe')).toBeInTheDocument(st completeButtons = screen.getAllByText(/mark as 
+completed/i);
+    [7m   [0m [91m                                                          
+      ~~~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m257[0m:[9
+3m124[0m - [91merror[0m[90m TS1005: [0m')' expected.
+
+    [7m257[0m       expect(screen.getByText('John 
+Doe')).toBeInTheDocument(st completeButtons = screen.getAllByText(/mark as 
+completed/i);
+    [7m   [0m [91m                                                          
+                                                                 ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m258[0m:[9
+3m32[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m258[0m     if (completeButtons.length > 0) {
+    [7m   [0m [91m                               ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m259[0m:[9
+3m42[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m259[0m       fireEvent.click(completeButtons[0]);
+    [7m   [0m [91m                                         ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m261[0m:[9
+3m25[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m261[0m       await waitFor(() => {
+    [7m   [0m [91m                        ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m262[0m:[9
+3m74[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m262[0m         expect(screen.getByText(/failed to 
+update/i)).toBeInTheDocument();
+    [7m   [0m [91m                                                          
+               ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m263[0m:[9
+3m7[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m263[0m       });
+    [7m   [0m [91m      ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m264[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m264[0m     }
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m265[0m:[9
+3m3[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m265[0m   });
+    [7m   [0m [91m  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m267[0m:[9
+3m57[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m267[0m   it('should disable buttons while updating', async () => {
+    [7m   [0m [91m                                                        
+~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m270[0m:[9
+3m6[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m270[0m     );
+    [7m   [0m [91m     ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m273[0m:[9
+3m8[0m - [91merror[0m[90m TS17008: [0mJSX element 'BrowserRouter' has no 
+corresponding closing tag.
+
+    [7m273[0m       <BrowserRouter>
+    [7m   [0m [91m       ~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m274[0m:[9
+3m10[0m - [91merror[0m[90m TS17008: [0mJSX element 'ToastProvider' has no 
+corresponding closing tag.
+
+    [7m274[0m         <ToastProvider>queryAllByText(/mark as completed/i);
+    [7m   [0m [91m         ~~~~~~~~~~~~~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m275[0m:[9
+3m32[0m - [91merror[0m[90m TS1382: [0mUnexpected token. Did you mean 
+`{'>'}` or `&gt;`?
+
+    [7m275[0m     if (completeButtons.length > 0) {
+    [7m   [0m [91m                               ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m276[0m:[9
+3m42[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m276[0m       fireEvent.click(completeButtons[0]);
+    [7m   [0m [91m                                         ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m278[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m278[0m     } else {
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m280[0m:[9
+3m63[0m - [91merror[0m[90m TS1005: [0m'}' expected.
+
+    [7m280[0m       expect(screen.getByText('John Doe')).toBeInTheDocument();
+    [7m   [0m [91m                                                          
+    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m281[0m:[9
+3m5[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m281[0m     }
+    [7m   [0m [91m    ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m282[0m:[9
+3m3[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m282[0m   });
+    [7m   [0m [91m  ~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m283[0m:[9
+3m1[0m - [91merror[0m[90m TS1381: [0mUnexpected token. Did you mean 
+`{'}'}` or `&rbrace;`?
+
+    [7m283[0m });
+    [7m   [0m [91m~[0m
+    [96msrc/components/__tests__/AppointmentList.test.tsx[0m:[93m284[0m:[9
+3m1[0m - [91merror[0m[90m TS1005: [0m'</' expected.
+
+    [7m284[0m 
+    [7m   [0m [91m[0m
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.037 s
+Ran all test suites matching 
+/src\\components\\__tests__\\AppointmentList.test.tsx/i.
+(node:21380) [DEP0040] DeprecationWarning: The `punycode` module is 
+deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

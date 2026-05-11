@@ -49,19 +49,38 @@ describe('medications util', () => {
       const unique = [...new Set(COMMON_MEDICATIONS)];
       expect(COMMON_MEDICATIONS).toHaveLength(unique.length);
     });
+
+    it('should contain at least 30 medications', () => {
+      expect(COMMON_MEDICATIONS.length).toBeGreaterThanOrEqual(30);
+    });
+
+    it('should only contain string values', () => {
+      COMMON_MEDICATIONS.forEach(med => {
+        expect(typeof med).toBe('string');
+        expect(med.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('should not contain empty strings', () => {
+      COMMON_MEDICATIONS.forEach(med => {
+        expect(med.trim()).not.toBe('');
+      });
+    });
   });
 
   describe('FREQUENCY_OPTIONS', () => {
-    it('should contain standard frequency options', () => {
+    it('should contain daily frequency options', () => {
       expect(FREQUENCY_OPTIONS).toContain('Once daily');
       expect(FREQUENCY_OPTIONS).toContain('Twice daily');
       expect(FREQUENCY_OPTIONS).toContain('Thrice daily');
+      expect(FREQUENCY_OPTIONS).toContain('Four times daily');
     });
 
-    it('should contain hourly intervals', () => {
+    it('should contain hourly frequency options', () => {
       expect(FREQUENCY_OPTIONS).toContain('Every 4 hours');
       expect(FREQUENCY_OPTIONS).toContain('Every 6 hours');
       expect(FREQUENCY_OPTIONS).toContain('Every 8 hours');
+      expect(FREQUENCY_OPTIONS).toContain('Every 12 hours');
     });
 
     it('should contain meal-related options', () => {
@@ -69,12 +88,34 @@ describe('medications util', () => {
       expect(FREQUENCY_OPTIONS).toContain('After meals');
     });
 
-    it('should contain conditional option', () => {
+    it('should contain as-needed option', () => {
       expect(FREQUENCY_OPTIONS).toContain('As needed');
+    });
+
+    it('should contain bedtime option', () => {
+      expect(FREQUENCY_OPTIONS).toContain('At bedtime');
     });
 
     it('should have at least 10 options', () => {
       expect(FREQUENCY_OPTIONS.length).toBeGreaterThanOrEqual(10);
+    });
+
+    it('should only contain string values', () => {
+      FREQUENCY_OPTIONS.forEach(option => {
+        expect(typeof option).toBe('string');
+        expect(option.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('should not have duplicates', () => {
+      const unique = [...new Set(FREQUENCY_OPTIONS)];
+      expect(FREQUENCY_OPTIONS).toHaveLength(unique.length);
+    });
+
+    it('should not contain empty strings', () => {
+      FREQUENCY_OPTIONS.forEach(option => {
+        expect(option.trim()).not.toBe('');
+      });
     });
   });
 });

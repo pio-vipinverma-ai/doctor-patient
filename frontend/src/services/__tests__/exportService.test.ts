@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
   exportPatients,
   exportConsultations,
-  downloadFile
+  downloadFile,
+  generateFilename
 } from '../exportService';
 
 jest.mock('axios');
@@ -141,6 +142,51 @@ describe('exportService', () => {
       expect(URL.createObjectURL).toHaveBeenCalledWith(mockBlob);
       expect(mockLink.download).toBe('test.csv');
       expect(mockClick).toHaveBeenCalled();
+    });
+  });
+
+  describe('generateFilename', () => {
+    it('should generate filename for patients CSV export', () => {
+      const mockDate = new Date('2026-05-11T10:30:00.000Z');
+      jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any);
+
+      const filename = generateFilename('patients', 'csv');
+
+      expect(filename).toBe('patients_20260511.csv');
+    });
+
+    it('should generate filename for patients PDF export', () => {
+      const mockDate = new Date('2026-05-11T10:30:00.000Z');
+      jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any);
+
+      const filename = generateFilename('patients', 'pdf');
+
+      expect(filename).toBe('patients_20260511.pdf');
+    });
+
+    it('should generate filename for consultations CSV export', () => {
+      const mockDate = new Date('2026-05-11T10:30:00.000Z');
+      jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any);
+
+      const filename = generateFilename('consultations', 'csv');
+
+      expect(filename).toBe('consultations_20260511.csv');
+    });
+
+    it('should generate filename for consultations PDF export', () => {
+      const mockDate = new Date('2026-05-11T10:30:00.000Z');
+      jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any);
+
+      const filename = generateFilename('consultations', 'pdf');
+
+      expect(filename).toBe('consultations_20260511.pdf');
+    });
+
+    it('should use current date in filename', () => {
+      const filename = generateFilename('patients', 'csv');
+
+      // Should have format: patients_YYYYMMDD.csv
+      expect(filename).toMatch(/^patients_\d{8}\.csv$/);
     });
   });
 });

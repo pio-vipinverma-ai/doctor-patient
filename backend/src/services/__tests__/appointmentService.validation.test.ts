@@ -20,7 +20,7 @@ describe('AppointmentService - Validation and Edge Cases', () => {
   describe('validateAppointmentInput', () => {
     const validInput = {
       patientId: 'p1',
-      scheduledTime: '2026-05-10T10:00:00',
+      scheduledTime: '2026-05-12T10:00:00',
       reason: 'Checkup'
     };
 

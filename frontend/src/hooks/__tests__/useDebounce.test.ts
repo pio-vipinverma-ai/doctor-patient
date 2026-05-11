@@ -50,6 +50,74 @@ describe('useDebounce hook', () => {
     act(() => {
       jest.advanceTimersByTime(200);
     });
+    
+    rerender({ value: 'update2', delay: 500 });
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
+    
+    rerender({ value: 'final', delay: 500 });
+    
+    // Should still have initial value
+    expect(result.current).toBe('initial');
+    
+    // Complete the delay
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+    
+    // Should update to final value
+    expect(result.current).toBe('final');
+  });
+
+  it('should work with numeric values', () => {
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value, 300),
+      { initialProps: { value: 0 } }
+    );
+
+    expect(result.current).toBe(0);
+    
+    rerender({ value: 42 });
+    
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+    
+    expect(result.current).toBe(42);
+  });
+
+  it('should work with objects', () => {
+    const obj1 = { name: 'John', age: 30 };
+    const obj2 = { name: 'Jane', age: 25 };
+    
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value, 300),
+      { initialProps: { value: obj1 } }
+    );
+
+    expect(result.current).toEqual(obj1);
+    
+    rerender({ value: obj2 });
+    
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+    
+    expect(result.current).toEqual(obj2);
+  });
+
+  it('should use default delay of 300ms', () => {
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value),
+      { initialProps: { value: 'test' } }
+    );
+
+    rerender({ value: 'updated' });
+    
+    act(() => {
+      jest.advanceTimersByTime(200);
+    });
 
     rerender({ value: 'update2', delay: 500 });
     act(() => {

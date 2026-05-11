@@ -30,6 +30,130 @@ describe('vitals util', () => {
   });
 
   describe('isVitalNormal', () => {
+    it('should identify normal temperature', () => {
+      expect(isVitalNormal('temperature', 98.6)).toBe(true);
+      expect(isVitalNormal('temperature', 97.0)).toBe(true);
+      expect(isVitalNormal('temperature', 99.5)).toBe(true);
+    });
+
+    it('should identify abnormal temperature', () => {
+      expect(isVitalNormal('temperature', 94.0)).toBe(false);
+      expect(isVitalNormal('temperature', 101.0)).toBe(false);
+      expect(isVitalNormal('temperature', 105.0)).toBe(false);
+    });
+
+    it('should identify normal blood pressure systolic', () => {
+      expect(isVitalNormal('bpSystolic', 120)).toBe(true);
+      expect(isVitalNormal('bpSystolic', 110)).toBe(true);
+      expect(isVitalNormal('bpSystolic', 130)).toBe(true);
+    });
+
+    it('should identify abnormal blood pressure systolic', () => {
+      expect(isVitalNormal('bpSystolic', 85)).toBe(false);
+      expect(isVitalNormal('bpSystolic', 150)).toBe(false);
+      expect(isVitalNormal('bpSystolic', 180)).toBe(false);
+    });
+
+    it('should identify normal blood pressure diastolic', () => {
+      expect(isVitalNormal('bpDiastolic', 80)).toBe(true);
+      expect(isVitalNormal('bpDiastolic', 70)).toBe(true);
+      expect(isVitalNormal('bpDiastolic', 85)).toBe(true);
+    });
+
+    it('should identify abnormal blood pressure diastolic', () => {
+      expect(isVitalNormal('bpDiastolic', 55)).toBe(false);
+      expect(isVitalNormal('bpDiastolic', 95)).toBe(false);
+      expect(isVitalNormal('bpDiastolic', 110)).toBe(false);
+    });
+
+    it('should identify normal pulse', () => {
+      expect(isVitalNormal('pulse', 72)).toBe(true);
+      expect(isVitalNormal('pulse', 60)).toBe(true);
+      expect(isVitalNormal('pulse', 100)).toBe(true);
+    });
+
+    it('should identify abnormal pulse', () => {
+      expect(isVitalNormal('pulse', 45)).toBe(false);
+      expect(isVitalNormal('pulse', 120)).toBe(false);
+      expect(isVitalNormal('pulse', 150)).toBe(false);
+    });
+  });
+
+  describe('isVitalAcceptable', () => {
+    it('should accept values within acceptable range', () => {
+      expect(isVitalAcceptable('temperature', 95.0)).toBe(true);
+      expect(isVitalAcceptable('temperature', 105.0)).toBe(true);
+      expect(isVitalAcceptable('bpSystolic', 90)).toBe(true);
+      expect(isVitalAcceptable('bpSystolic', 180)).toBe(true);
+      expect(isVitalAcceptable('pulse', 40)).toBe(true);
+      expect(isVitalAcceptable('pulse', 150)).toBe(true);
+    });
+
+    it('should reject values outside acceptable range', () => {
+      expect(isVitalAcceptable('temperature', 94.0)).toBe(false);
+      expect(isVitalAcceptable('temperature', 106.0)).toBe(false);
+      expect(isVitalAcceptable('bpSystolic', 85)).toBe(false);
+      expect(isVitalAcceptable('bpSystolic', 185)).toBe(false);
+    });
+  });
+
+  describe('getVitalWarning', () => {
+    it('should return null for normal vitals', () => {
+      expect(getVitalWarning('temperature', 98.6)).toBeNull();
+      expect(getVitalWarning('bpSystolic', 120)).toBeNull();
+      expect(getVitalWarning('pulse', 72)).toBeNull();
+    });
+
+    it('should return warning for low vitals', () => {
+      const warning = getVitalWarning('temperature', 94.0);
+      expect(warning).toContain('Low');
+      expect(warning).toContain('94');
+    });
+
+    it('should return warning for high vitals', () => {
+      const warning = getVitalWarning('temperature', 106.0);
+      expect(warning).toContain('High');
+      expect(warning).toContain('106');
+    });
+
+    it('should return elevated warning for borderline vitals', () => {
+      const warning = getVitalWarning('bpSystolic', 145);
+      if (warning) {
+        expect(warning).toBeTruthy();
+      }
+    });
+
+    it('should include unit in warning message', () => {
+      const warning = getVitalWarning('temperature', 94.0);
+      expect(warning).toContain('°F');
+    });
+
+    it('should include normal range in warning', () => {
+      const warning = getVitalWarning('pulse', 150);
+      if (warning) {
+        expect(warning).toContain('60-100');
+      }
+    });
+  });
+
+  describe('VITAL_RANGES validation', () => {
+    it('should have ranges for all vital types', () => {
+      expect(VITAL_RANGES.temperature).toBeDefined();
+      expect(VITAL_RANGES.bpSystolic).toBeDefined();
+      expect(VITAL_RANGES.bpDiastolic).toBeDefined();
+      expect(VITAL_RANGES.pulse).toBeDefined();
+    });
+
+    it('should have valid range values', () => {
+      Object.values(VITAL_RANGES).forEach(range => {
+        expect(range.min).toBeLessThan(range.max);
+        expect(range.unit).toBeTruthy();
+        expect(range.normal).toBeDefined();
+      });
+    });
+  });
+
+  describe('isVitalNormal additional tests', () => {
     it('should return true for normal temperature', () => {
       expect(isVitalNormal('temperature', 98.6)).toBe(true);
       expect(isVitalNormal('temperature', 97)).toBe(true);

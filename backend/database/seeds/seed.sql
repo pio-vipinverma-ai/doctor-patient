@@ -11,7 +11,7 @@ VALUES (
   '550e8400-e29b-41d4-a716-446655440001',
   'doctor',
   'doctor@clinic.com',
-  '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', -- password: password123
+  '$2b$10$1uR6/7eCret.98sgAq6zges.D3ghmdi385Gu6gqL8sQ0ZecH0/ts2', -- password: password123
   'Dr. John Admin',
   NOW(),
   NOW()

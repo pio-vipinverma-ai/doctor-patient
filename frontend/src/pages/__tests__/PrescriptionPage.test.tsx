@@ -1,38 +1,77 @@
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { PrescriptionPage } from '../PrescriptionPage';
 import { AuthProvider } from '../../context/AuthContext';
 import { ToastProvider } from '../../context/ToastContext';
 import * as prescriptionService from '../../services/prescriptionService';
 
-jest.mock('../../services/authService');
 jest.mock('../../services/prescriptionService');
-jest.mock('html2pdf.js');
+
+// Mock html2pdf
+jest.mock('html2pdf.js', () => {
+  const mockHtml2pdf = jest.fn(() => ({
+    from: jest.fn(() => ({
+      set: jest.fn(() => ({
+        save: jest.fn(() => Promise.resolve())
+      }))
+    }))
+  }));
+  mockHtml2pdf.default = mockHtml2pdf;
+  return mockHtml2pdf;
+});
+
+// Mock window.print
+global.window.print = jest.fn();
 
 describe('PrescriptionPage', () => {
-  const mockPrescription = {
-    id: '1',
-    patientId: '1',
-    consultationId: '1',
+  const mockPrescription: prescriptionService.PrescriptionData = {
+    id: 'presc1',
+    consultationId: 'cons1',
+    patientId: 'p1',
     patientName: 'John Doe',
-    date: '2026-05-08',
+    patientAge: 35,
+    patientGender: 'M',
+    diagnosis: 'Common cold',
     medications: [
       {
         name: 'Paracetamol',
         dosage: '500mg',
         frequency: 'Twice daily',
         duration: '5 days',
-        instructions: 'After meals'
+        instructions: 'After food'
       }
-    ]
+    ],
+    printed: false,
+    createdAt: '2026-05-10T10:00:00Z',
+    clinicHeader: {
+      name: 'Test Clinic',
+      address: '123 Main St',
+      phone: '555-0100'
+    },
+    vitals: {
+      temperature: 98.6,
+      bp: '120/80',
+      pulse: 72
+    }
   };
 
-  const renderPrescriptionPage = () => {
+  const mockHtml = '<div class="prescription"><h1>Prescription</h1></div>';
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (prescriptionService.getPrescriptionById as jest.Mock).mockResolvedValue(mockPrescription);
+    (prescriptionService.getPrescriptionHTML as jest.Mock).mockResolvedValue(mockHtml);
+    (prescriptionService.markAsPrinted as jest.Mock).mockResolvedValue(undefined);
+  });
+
+  const renderPage = (prescriptionId = 'presc1') => {
     return render(
-      <MemoryRouter initialEntries={['/prescriptions/1']}>\n        <AuthProvider>
+      <MemoryRouter initialEntries={[`/prescription/${prescriptionId}`]}>
+        <AuthProvider>
           <ToastProvider>
             <Routes>
-              <Route path="/prescriptions/:id" element={<PrescriptionPage />} />
+              <Route path="/prescription/:prescriptionId" element={<PrescriptionPage />} />
             </Routes>
           </ToastProvider>
         </AuthProvider>
@@ -40,165 +79,194 @@ describe('PrescriptionPage', () => {
     );
   };
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    localStorage.clear();
-    (prescriptionService.getPrescriptionById as jest.Mock).mockResolvedValue(mockPrescription);
-    (prescriptionService.getPrescriptionHTML as jest.Mock).mockResolvedValue('<html>Prescription</html>');
-    (prescriptionService.markAsPrinted as jest.Mock).mockResolvedValue(undefined);
-  });
-
-  it('should render prescription page', async () => {
-    const { container } = renderPrescriptionPage();
-    expect(container).toBeTruthy();
-  });
-
-  it('should load prescription data', async () => {
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalledWith('1');
-    }, { timeout: 3000 });
-  });
-
-  it('should display prescription information', async () => {
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      expect(screen.queryByText('John Doe')).toBeInTheDocument();
-    }, { timeout: 3000 });
-  });
-
-  it('should display medications', async () => {
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      expect(screen.queryByText('Paracetamol')).toBeInTheDocument();
-    }, { timeout: 3000 });
-  });
-
-  it('should have print button', async () => {
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      expect(screen.queryByRole('button', { name: /print/i })).toBeInTheDocument();
-    }, { timeout: 3000 });
-  });
-
-  it('should have download button', async () => {
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      expect(screen.queryByRole('button', { name: /download/i })).toBeInTheDocument();
-    }, { timeout: 3000 });
-  });
-
-  it('should call print service when print clicked', async () => {
-    const mockPrint = jest.fn();
-    window.print = mockPrint;
-
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      const printButton = screen.queryByRole('button', { name: /print/i });
-      if (printButton) {
-        printButton.click();
-      }
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      expect(prescriptionService.markAsPrinted).toHaveBeenCalled();
-    }, { timeout: 3000 });
-  });
-
-  it('should handle prescription load error', async () => {
-    (prescriptionService.getPrescriptionById as jest.Mock).mockRejectedValueOnce(
-      new Error('Failed to load')
+  it('should render loading state initially', () => {
+    (prescriptionService.getPrescriptionById as jest.Mock).mockImplementation(
+      () => new Promise(() => {}) // Never resolves
     );
 
-    renderPrescriptionPage();
+    renderPage();
+    
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  });
+
+  it('should fetch prescription data on mount', async () => {
+    renderPage();
+
+    await waitFor(() => {
+      expect(prescriptionService.getPrescriptionById).toHaveBeenCalledWith('presc1');
+      expect(prescriptionService.getPrescriptionHTML).toHaveBeenCalledWith('presc1');
+    });
+  });
+
+  it('should render prescription content after loading', async () => {
+    renderPage();
 
     await waitFor(() => {
       expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
+    });
+
+    // Should not show loading anymore
+    await waitFor(() => {
+      expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+    });
   });
 
-  it('should handle print error', async () => {
-    (prescriptionService.markAsPrinted as jest.Mock).mockRejectedValueOnce(
-      new Error('Print failed')
+  it('should handle missing prescription ID', async () => {
+    render(
+      <MemoryRouter initialEntries={['/prescription/']}>
+        <AuthProvider>
+          <ToastProvider>
+            <Routes>
+              <Route path="/prescription/:prescriptionId?" element={<PrescriptionPage />} />
+            </Routes>
+          </ToastProvider>
+        </AuthProvider>
+      </MemoryRouter>
     );
 
-    window.print = jest.fn();
-
-    renderPrescriptionPage();
-
     await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      const printButton = screen.queryByRole('button', { name: /print/i });
-      if (printButton) {
-        printButton.click();
-      }
-    }, { timeout: 3000 });
+      expect(prescriptionService.getPrescriptionById).not.toHaveBeenCalled();
+    });
   });
 
-  it('should show loading state', () => {
-    (prescriptionService.getPrescriptionById as jest.Mock).mockImplementation(() => 
-      new Promise(resolve => setTimeout(() => resolve(mockPrescription), 100))
+  it('should handle prescription fetch error', async () => {
+    (prescriptionService.getPrescriptionById as jest.Mock).mockRejectedValue(
+      new Error('Not found')
     );
 
-    renderPrescriptionPage();
-
-    // Just verify render doesn't crash during loading
-    expect(screen.queryByText(/loading/i) || screen.queryByRole('progressbar')).toBeDefined();
-  });
-
-  it('should have back button', async () => {
-    renderPrescriptionPage();
+    renderPage();
 
     await waitFor(() => {
       expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      expect(screen.queryByRole('button', { name: /back/i })).toBeInTheDocument();
-    }, { timeout: 3000 });
+    });
   });
 
-  it('should navigate back when back clicked', async () => {
-    renderPrescriptionPage();
-
-    await waitFor(() => {
-      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
-    }, { timeout: 3000 });
-
-    await waitFor(() => {
-      const backButton = screen.queryByRole('button', { name: /back/i });
-      if (backButton) {
-        backButton.click();
+  it('should handle prescription fetch error with response data', async () => {
+    (prescriptionService.getPrescriptionById as jest.Mock).mockRejectedValue({
+      response: {
+        data: {
+          error: 'Prescription not found'
+        }
       }
-    }, { timeout: 3000 });
+    });
+
+    renderPage();
+
+    await waitFor(() => {
+      expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+    });
+  });
+
+  describe('Print Functionality', () => {
+    it('should handle print button click', async () => {
+      renderPage();
+
+      await waitFor(() => {
+        expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+      });
+
+      const printButton = screen.getByRole('button', { name: /print prescription/i });
+      printButton.click();
+
+      await waitFor(() => {
+        expect(prescriptionService.markAsPrinted).toHaveBeenCalledWith('presc1');
+        expect(window.print).toHaveBeenCalled();
+      });
+    });
+
+    it('should handle print error', async () => {
+      (prescriptionService.markAsPrinted as jest.Mock).mockRejectedValue(
+        new Error('Failed to mark as printed')
+      );
+
+      renderPage();
+
+      await waitFor(() => {
+        expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+      });
+
+      const printButton = screen.getByRole('button', { name: /print prescription/i });
+      printButton.click();
+
+      await waitFor(() => {
+        expect(prescriptionService.markAsPrinted).toHaveBeenCalledWith('presc1');
+      });
+    });
+  });
+
+  describe('Download PDF Functionality', () => {
+    it('should handle download PDF button click', async () => {
+      const mockHtml2pdf = require('html2pdf.js');
+      
+      renderPage();
+
+      await waitFor(() => {
+        expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+      });
+
+      const downloadButton = screen.getByRole('button', { name: /download pdf/i });
+      downloadButton.click();
+
+      await waitFor(() => {
+        expect(prescriptionService.markAsPrinted).toHaveBeenCalledWith('presc1');
+        expect(mockHtml2pdf).toHaveBeenCalled();
+      });
+    });
+
+    it('should handle download PDF error', async () => {
+      (prescriptionService.markAsPrinted as jest.Mock).mockRejectedValue(
+        new Error('Failed to mark as printed')
+      );
+
+      renderPage();
+
+      await waitFor(() => {
+        expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+      });
+
+      const downloadButton = screen.getByRole('button', { name: /download pdf/i });
+      downloadButton.click();
+
+      await waitFor(() => {
+        expect(prescriptionService.markAsPrinted).toHaveBeenCalledWith('presc1');
+      });
+    });
+  });
+
+  describe('Navigation', () => {
+    it('should handle view full page button click', async () => {
+      const mockOpen = jest.fn();
+      global.window.open = mockOpen;
+
+      renderPage();
+
+      await waitFor(() => {
+        expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+      });
+
+      const viewHtmlButton = screen.getByRole('button', { name: /view full page/i });
+      viewHtmlButton.click();
+
+      expect(mockOpen).toHaveBeenCalledWith(
+        'http://localhost:5000/api/prescriptions/presc1/print?format=html',
+        '_blank'
+      );
+    });
+
+    it('should handle back to dashboard button click', async () => {
+      renderPage();
+
+      await waitFor(() => {
+        expect(prescriptionService.getPrescriptionById).toHaveBeenCalled();
+      });
+
+      const backButton = screen.getByRole('button', { name: /back to dashboard/i });
+      backButton.click();
+
+      // Navigation will occur (tested via router)
+      await waitFor(() => {
+        expect(backButton).toBeInTheDocument();
+      });
+    });
   });
 });

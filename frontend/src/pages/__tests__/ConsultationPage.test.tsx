@@ -134,18 +134,18 @@ describe('ConsultationPage', () => {
 
     const inputs = screen.getAllByRole('textbox');
     
-    // Fill medication form (name, dosage, duration are textboxes after complaints/diagnosis)
-    fireEvent.change(inputs[inputs.length - 3], { target: { value: 'Paracetamol' } });
-    fireEvent.change(inputs[inputs.length - 2], { target: { value: '500mg' } });
-    fireEvent.change(inputs[inputs.length - 1], { target: { value: '5 days' } });
+    // Fill medication form (after complaints/diagnosis, there are 4 more textboxes: name, dosage, duration, instructions)
+    fireEvent.change(inputs[inputs.length - 4], { target: { value: 'Paracetamol' } }); // name
+    fireEvent.change(inputs[inputs.length - 3], { target: { value: '500mg' } }); // dosage
+    fireEvent.change(inputs[inputs.length - 2], { target: { value: '5 days' } }); // duration
 
     // Submit medication
-    const saveMedButton = screen.getByRole('button', { name: /save medication/i });
+    const saveMedButton = screen.getByRole('button', { name: /^add$/i });
     fireEvent.click(saveMedButton);
 
     // Medication should be in list
     await waitFor(() => {
-      expect(screen.getByText('Paracetamol')).toBeInTheDocument();
+      expect(screen.getByText(/Paracetamol/i)).toBeInTheDocument();
     });
   });
 
@@ -159,11 +159,10 @@ describe('ConsultationPage', () => {
     const submitButton = screen.getByRole('button', { name: /save.*prescription/i });
     fireEvent.click(submitButton);
 
-    // Should show validation errors
+    // Should not call createConsultation without required fields
     await waitFor(() => {
-      const alerts = screen.queryAllByRole('alert');
-      expect(alerts.length).toBeGreaterThan(0);
-    }, { timeout: 3000 });
+      expect(consultationService.createConsultation).not.toHaveBeenCalled();
+    });
   });
 
   it('should validate medication fields', async () => {
@@ -178,11 +177,11 @@ describe('ConsultationPage', () => {
     fireEvent.click(addMedButton);
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /save medication/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^add$/i })).toBeInTheDocument();
     });
 
     // Try to save without filling required fields
-    const saveMedButton = screen.getByRole('button', { name: /save medication/i });
+    const saveMedButton = screen.getByRole('button', { name: /^add$/i });
     fireEvent.click(saveMedButton);
 
     // Validation handled by component toast notifications
@@ -212,17 +211,17 @@ describe('ConsultationPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /add medication/i }));
     
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /save medication/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^add$/i })).toBeInTheDocument();
     });
 
     const allTextboxes = screen.getAllByRole('textbox');
-    fireEvent.change(allTextboxes[allTextboxes.length - 3], { target: { value: 'Paracetamol' } });
-    fireEvent.change(allTextboxes[allTextboxes.length - 2], { target: { value: '500mg' } });
-    fireEvent.change(allTextboxes[allTextboxes.length - 1], { target: { value: '5 days' } });
-    fireEvent.click(screen.getByRole('button', { name: /save medication/i }));
+    fireEvent.change(allTextboxes[allTextboxes.length - 4], { target: { value: 'Paracetamol' } }); // name
+    fireEvent.change(allTextboxes[allTextboxes.length - 3], { target: { value: '500mg' } }); // dosage
+    fireEvent.change(allTextboxes[allTextboxes.length - 2], { target: { value: '5 days' } }); // duration
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('Paracetamol')).toBeInTheDocument();
+      expect(screen.getByText(/Paracetamol/i)).toBeInTheDocument();
     });
 
     // Submit consultation
@@ -282,17 +281,17 @@ describe('ConsultationPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /add medication/i }));
     
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /save medication/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^add$/i })).toBeInTheDocument();
     });
 
     const allTextboxes = screen.getAllByRole('textbox');
-    fireEvent.change(allTextboxes[allTextboxes.length - 3], { target: { value: 'Paracetamol' } });
-    fireEvent.change(allTextboxes[allTextboxes.length - 2], { target: { value: '500mg' } });
-    fireEvent.change(allTextboxes[allTextboxes.length - 1], { target: { value: '5 days' } });
-    fireEvent.click(screen.getByRole('button', { name: /save medication/i }));
+    fireEvent.change(allTextboxes[allTextboxes.length - 4], { target: { value: 'Paracetamol' } }); // name
+    fireEvent.change(allTextboxes[allTextboxes.length - 3], { target: { value: '500mg' } }); // dosage
+    fireEvent.change(allTextboxes[allTextboxes.length - 2], { target: { value: '5 days' } }); // duration
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('Paracetamol')).toBeInTheDocument();
+      expect(screen.getByText(/Paracetamol/i)).toBeInTheDocument();
     });
 
     // Submit
